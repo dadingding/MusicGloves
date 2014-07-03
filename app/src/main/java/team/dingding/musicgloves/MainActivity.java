@@ -12,14 +12,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int azard = 2;
-        int ffff=3;
-        int test = 0;
-        int aaaaa=3;
+
     }
     public void PlayMusic(){
-        int i=0;
-        int j=0;
+
     }
 
     @Override

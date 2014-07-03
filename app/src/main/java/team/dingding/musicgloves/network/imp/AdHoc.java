@@ -17,23 +17,14 @@ import team.dingding.musicgloves.network.intf.IServerCallBack;
  * 用于手机与单片机端的点对点网络传输
  */
 public class AdHoc implements INetworkTransmission {
+    public ConnectingState connectingState = ConnectingState.unConnected;
+    public String sb="";
     private ServerSocket mServerSocket;
     private String data = "";
-
-
     private IServerCallBack eventConnected; //连接成功时的回调函数
     private IServerCallBack eventDisconnected; //连接断开时的回调函数
     private IServerCallBack eventGetMessage; //得到信息时的回调函数
-
-
-
     private Map<Long,Client> clientMap=new HashMap<Long, Client>();
-
-
-
-
-    public ConnectingState connectingState = ConnectingState.unConnected;
-    public String sb="";
 
     public AdHoc(){}
 
@@ -71,8 +62,8 @@ public class AdHoc implements INetworkTransmission {
 
 
     //为客户端发送信息
-    @Override
-    public void sendMessage(long cid, String message) {
+//    @Override
+    public void sendMessageOld(long cid, String message) {
         Client client=clientMap.get(cid);
         try {
             client.writeBufLock.lock();
@@ -83,9 +74,26 @@ public class AdHoc implements INetworkTransmission {
         }
     }
 
-    //得到某客户端的信息
+    //为客户端发送信息
     @Override
-    public String getMessage(long cid) {
+    public void sendMessage(long cid, String message) {
+        Client client=clientMap.get(cid);
+        try {
+            DataOutputStream out=new DataOutputStream(client.socket.getOutputStream());
+            out.writeBytes(message);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+    //得到某客户端的信息
+//    @Override
+    public String getMessageSafely(long cid) {
         String result;
         Client client=clientMap.get(cid);
 
@@ -100,6 +108,19 @@ public class AdHoc implements INetworkTransmission {
         return result;
 
     }
+
+    //得到某客户端的信息，非线程安全
+    @Override
+    public String getMessage(long cid) {
+        String result;
+        Client client=clientMap.get(cid);
+        result = client.readBuf;
+        client.readBuf = "";
+        return result;
+
+    }
+
+
 
     //得到某客户端的连接状态
     @Override
@@ -162,7 +183,7 @@ public class AdHoc implements INetworkTransmission {
 
    private void tryConnecting(){
        DataInputStream in=null;
-       DataOutputStream out=null;
+//       DataOutputStream out=null;
        int count;
        long cid=Thread.currentThread().getId();
 
@@ -170,48 +191,33 @@ public class AdHoc implements INetworkTransmission {
        try {
            Socket socket = client.socket;
            client.connectingState=ConnectingState.connected;
-           //Log.v("233 ", String.valueOf(cid) + "Connect succeed");
            in = new DataInputStream(socket.getInputStream());
-           out=new DataOutputStream(socket.getOutputStream());
+//           out=new DataOutputStream(socket.getOutputStream());
            byte[] buf = new byte[1024];
            while (client.connectingState==ConnectingState.connected) {
                //读取数据
-               count=in.available();
-
-               if (count>0) {
-                   try{
-                   client.readBufLock.lock();
-
-                       int len = in.read(buf);
-                       if (len == -1) {
-                           connectingState = ConnectingState.unConnected;
-                       } else {
-                           client.readBuf += new String(buf, 0, len);
-                           if (eventGetMessage!=null) eventGetMessage.execute(cid);
-                       }
-                   }
-                   finally {
-                       client.readBufLock.unlock();
-                   }
-               }
-
-               //发送数据
                try{
-               client.writeBufLock.lock();
-                   if (client.writeBuf != "") {
-                       out.writeBytes(client.writeBuf);
-                       client.writeBuf = "";
+                   client.readBufLock.lock();
+                   int len = in.read(buf);
+                   if (len == -1) {
+                       connectingState = ConnectingState.unConnected;
+
+                   }
+                   else {
+                       client.readBuf += new String(buf, 0, len);
+                       if (eventGetMessage!=null) eventGetMessage.execute(cid);
                    }
                }
                finally {
-                   client.writeBufLock.unlock();
+                   client.readBufLock.unlock();
                }
+
                try{Thread.sleep(20);}catch (InterruptedException e){}
 
            }
            in.close();
-           out.close();
            socket.close();
+           if (eventDisconnected!=null) eventDisconnected.execute(cid);
        } catch (IOException e) {
            connectingState = ConnectingState.failed;
            if (eventDisconnected!=null) eventDisconnected.execute(cid);
@@ -239,6 +245,15 @@ public class AdHoc implements INetworkTransmission {
 
 
     public class Client{
+        public String ipAddr;
+        public int port;
+        public long cid;
+        public Socket socket;
+        public String readBuf;
+        public String writeBuf;
+        public ReentrantLock readBufLock;
+        public ReentrantLock writeBufLock;
+        public ConnectingState connectingState;
         public Client(String _ipAddr,int _port,long _cid,Socket _socket){
             ipAddr=_ipAddr;
             port=_port;
@@ -250,15 +265,6 @@ public class AdHoc implements INetworkTransmission {
             readBuf="";
             writeBuf="";
         }
-        public String ipAddr;
-        public int port;
-        public long cid;
-        public Socket socket;
-        public String readBuf;
-        public String writeBuf;
-        public ReentrantLock readBufLock;
-        public ReentrantLock writeBufLock;
-        public ConnectingState connectingState;
 
     }
 }
