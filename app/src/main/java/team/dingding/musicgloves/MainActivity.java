@@ -1,32 +1,45 @@
 package team.dingding.musicgloves;
 
 import android.app.Activity;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class MainActivity extends Activity {
+
+    private SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int azard = 2;
-        int ffff=3;
-        int test = 0;
-        int aaaaa=3;
+        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
+        soundPool.load(this,R.raw.falg,1);
     }
-    public void PlayMusic(){
-        int i=0;
-        int j=0;
+    public void PlayMusic(View v){
+//        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
+//        soundPool.load(this,R.raw.gg,1);
+//        try {
+//            Thread.sleep(100);// 给予初始化音乐文件足够时间
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        soundPool.play(1,1, 1, 0, 0, 1);
+    }
+
+    public void StopPlay(View v){
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        int azard2 = 0;
         return true;
     }
 
