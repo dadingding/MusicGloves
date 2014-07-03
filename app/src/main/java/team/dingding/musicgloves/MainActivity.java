@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
-        soundPool.load(this,R.raw.falg,1);
+        soundPool.load(this,R.raw.time1,1);
     }
     public void PlayMusic(View v){
 //        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        soundPool.play(1,1, 1, 0, 0, 1);
+        soundPool.play(1,1,1, 0, 0, 1);
     }
 
     public void StopPlay(View v){
