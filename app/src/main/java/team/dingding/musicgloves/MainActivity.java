@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         int azard = 0;
+        int test = 0;
     }
 
 
