@@ -15,9 +15,11 @@ public class MainActivity extends Activity {
         int azard = 2;
         int ffff=3;
         int test = 0;
+        int aaaaa=3;
     }
     public void PlayMusic(){
-
+        int bbb=3;
+        bbb=bbb+1;
     }
 
     @Override
