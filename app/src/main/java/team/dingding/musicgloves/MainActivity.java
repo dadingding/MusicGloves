@@ -17,7 +17,8 @@ public class MainActivity extends Activity {
         int test = 0;
     }
     public void PlayMusic(){
-
+        int i=0;
+        int j=0;
     }
 
     @Override
