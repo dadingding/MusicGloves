@@ -17,7 +17,6 @@ import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.imp.ProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 
-
 public class MainActivity extends Activity {
 
     private SoundPool soundPool;
@@ -45,10 +44,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
         soundPool.load(this,R.raw.time1,1);
-
-
-
-
     }
     public void PlayMusic(View v){
 //        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
@@ -58,7 +53,7 @@ public class MainActivity extends Activity {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        soundPool.play(1,1, 1, 0, 0, 1);
+        soundPool.play(1,1,1, 0, 0, 1);
     }
 
     public void StopPlay(View v){
