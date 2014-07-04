@@ -1,6 +1,7 @@
 package team.dingding.musicgloves;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -40,17 +41,19 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
+        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,100);
+        final ProgressDialog dialog=ProgressDialog.show(this,
+                "loading music","wait...",true);
         soundPool.load(this,R.raw.time1,1);
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                dialog.dismiss();
+                Toast.makeText(getBaseContext(),"Load success",Toast.LENGTH_SHORT).show();
+                }
+        });
     }
     public void PlayMusic(View v){
-//        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,10);
-//        soundPool.load(this,R.raw.gg,1);
-//        try {
-//            Thread.sleep(100);// 给予初始化音乐文件足够时间
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         soundPool.play(1,1,1, 0, 0, 1);
     }
 
@@ -60,10 +63,11 @@ public class MainActivity extends Activity {
 
     public void ceshi(View v){
         WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
-        pc.registerMusicEvent("aaaa",new IProtocolCallBack() {
+        pc.registerMusicEvent("playmusic",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                childProcessToast(cid + " 事件"  + "aaaa" +" 参数" + argument);
+                soundPool.play(1,1,1, 0, 0, 1);
+                childProcessToast(cid + " 事件"  + "playmusic" +" 参数" + argument);
             }
         });
 
@@ -108,7 +112,6 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        int azard2 = 0;
         return true;
     }
 
