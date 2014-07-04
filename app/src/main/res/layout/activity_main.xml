@@ -35,4 +35,15 @@
         android:layout_marginTop="53dp"
         android:onClick="StopPlay"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        android:id="@+id/button3"
+        android:layout_below="@+id/button2"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_marginTop="59dp"
+        android:onClick="ceshi"
+        />
+
 </RelativeLayout>

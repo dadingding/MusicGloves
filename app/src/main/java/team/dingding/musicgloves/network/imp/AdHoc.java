@@ -1,5 +1,7 @@
 package team.dingding.musicgloves.network.imp;
 
+import android.util.Log;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -172,7 +174,7 @@ public class AdHoc implements INetworkTransmission {
                         (socket.getLocalAddress().toString(), socket.getPort(), thread.getId(),socket);
                 clientMap.put(thread.getId(), client);
                 thread.start();
-                if (eventConnected!=null) eventConnected.execute(thread.getId());
+//                if (eventConnected!=null) eventConnected.execute(thread.getId());
             }
         }
         catch (IOException e) {
@@ -206,6 +208,7 @@ public class AdHoc implements INetworkTransmission {
                    else {
                        client.readBuf += new String(buf, 0, len);
                        if (eventGetMessage!=null) eventGetMessage.execute(cid);
+                       Log.v("233","2333333");
                    }
                }
                finally {

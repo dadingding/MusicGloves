@@ -1,6 +1,8 @@
 package team.dingding.musicgloves.protocol.imp;
 
 import android.content.Context;
+import android.os.Looper;
+import android.util.Log;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -64,6 +66,7 @@ public class ProtocolController {
 
     private  void getMessage(Long cid){
         String s=adhoc.getMessage(cid);
+        Log.v("aaaa", s);
         if (mBufMap.containsKey(cid)){
             mBufMap.put(cid,mBufMap.get(cid)+s);
         }
@@ -76,7 +79,7 @@ public class ProtocolController {
     private void handleMessage(Long cid){
         String buf=mBufMap.get(cid);
         while (buf!=null && buf.length()>=mMessageLength){
-            String tmp=buf.substring(0,mMessageLength-1);
+            String tmp=buf.substring(0,mMessageLength);
             buf=buf.substring(mMessageLength);
             mBufMap.put(cid,buf);
             Message message=parseMessage(cid,tmp);
@@ -85,11 +88,15 @@ public class ProtocolController {
     }
 
     private Message parseMessage(Long cid,String message){
+        Log.v("aaaa",""+message.length());
         if (message.length()==mMessageLength){
-            String tmp=message.substring(0,mSerialNumberDigits-1);
+            String tmp=message.substring(0,mSerialNumberDigits);
             int sn=Integer.valueOf(tmp);
-            String ins=message.substring(0,mInstructionDigits-1 );
-            String arg=message.substring(0,mArgumentDigits-1);
+            message=message.substring(mSerialNumberDigits);
+            String ins=message.substring(0,mInstructionDigits );
+            message=message.substring(mInstructionDigits);
+            String arg=message.substring(0,mArgumentDigits);
+
             return new Message(sn,ins,arg);
         }
         else
@@ -97,10 +104,13 @@ public class ProtocolController {
     }
 
     private void postMessage(Long cid,Message message){
+        Log.v("233","sn "+message.serialNumber+"inst "+message.instruction+"arg "+message.argument);
         String opr= mInstrMap.get(message.instruction);
         IProtocolCallBack cb=mEventMap.get(opr);
         if (cb!=null){
+//            Looper.prepare();
             cb.execute(cid,message.argument);
+//            Looper.loop();
         }
     }
 
