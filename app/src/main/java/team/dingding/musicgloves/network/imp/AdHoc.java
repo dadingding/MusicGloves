@@ -19,7 +19,6 @@ import team.dingding.musicgloves.network.intf.IServerCallBack;
  * 用于手机与单片机端的点对点网络传输
  */
 public class AdHoc implements INetworkTransmission {
-    public ConnectingState connectingState = ConnectingState.unConnected;
     public String sb="";
     private ServerSocket mServerSocket;
     private String data = "";
@@ -44,7 +43,6 @@ public class AdHoc implements INetworkTransmission {
             thread.start();
 
         } catch (IOException e) {
-            connectingState = ConnectingState.failed;
             e.printStackTrace();
         }
     }
@@ -54,9 +52,9 @@ public class AdHoc implements INetworkTransmission {
     public void closeServer() {
         try {
             mServerSocket.close();
+//            clientMap.clear();
 
         } catch (IOException e) {
-            connectingState = ConnectingState.failed;
             e.printStackTrace();
         }
     }
@@ -174,11 +172,10 @@ public class AdHoc implements INetworkTransmission {
                         (socket.getLocalAddress().toString(), socket.getPort(), thread.getId(),socket);
                 clientMap.put(thread.getId(), client);
                 thread.start();
-//                if (eventConnected!=null) eventConnected.execute(thread.getId());
+                if (eventConnected!=null) eventConnected.execute(thread.getId());
             }
         }
         catch (IOException e) {
-            connectingState = ConnectingState.failed;
             e.printStackTrace();
         }
     }
@@ -202,13 +199,12 @@ public class AdHoc implements INetworkTransmission {
                    client.readBufLock.lock();
                    int len = in.read(buf);
                    if (len == -1) {
-                       connectingState = ConnectingState.unConnected;
+                       client.connectingState = ConnectingState.unConnected;
 
                    }
                    else {
                        client.readBuf += new String(buf, 0, len);
                        if (eventGetMessage!=null) eventGetMessage.execute(cid);
-                       Log.v("233","2333333");
                    }
                }
                finally {
@@ -220,9 +216,10 @@ public class AdHoc implements INetworkTransmission {
            }
            in.close();
            socket.close();
+           Log.v("233","233");
            if (eventDisconnected!=null) eventDisconnected.execute(cid);
        } catch (IOException e) {
-           connectingState = ConnectingState.failed;
+           client.connectingState = ConnectingState.failed;
            if (eventDisconnected!=null) eventDisconnected.execute(cid);
 
        }

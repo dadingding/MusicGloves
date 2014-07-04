@@ -2,11 +2,9 @@ package team.dingding.musicgloves;
 
 import android.app.Activity;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.network.intf.IServerCallBack;
-import team.dingding.musicgloves.protocol.imp.ProtocolController;
+import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 
 public class MainActivity extends Activity {
@@ -61,18 +59,18 @@ public class MainActivity extends Activity {
     }
 
     public void ceshi(View v){
-        ProtocolController pc=new ProtocolController(this.getApplicationContext());
+        WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
         pc.registerMusicEvent("aaaa",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                childProcessToast(argument);
+                childProcessToast(cid + " 事件"  + "aaaa" +" 参数" + argument);
             }
         });
 
         pc.registerMusicEvent("bbbb",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                childProcessToast(argument);
+                childProcessToast(cid + " 事件"  + "bbbb" +" 参数" + argument);
 
 
             }
@@ -82,7 +80,7 @@ public class MainActivity extends Activity {
         pc.registerMusicEvent("cccc",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                childProcessToast(argument);
+                childProcessToast(cid + " 事件"  + "cccc" +" 参数" + argument);
             }
         });
 
@@ -90,16 +88,14 @@ public class MainActivity extends Activity {
         pc.registerNetworkEvent("Connected", new IServerCallBack() {
             @Override
             public void execute(long cid) {
-                Toast.makeText(getApplicationContext(), "连接成功",
-                        Toast.LENGTH_SHORT).show();
+                childProcessToast(cid + "连接成功");
             }
         });
 
         pc.registerNetworkEvent("Disconnected", new IServerCallBack() {
             @Override
             public void execute(long cid) {
-                Toast.makeText(getApplicationContext(), "连接断开",
-                        Toast.LENGTH_SHORT).show();
+                childProcessToast(cid + "连接断开");
             }
         });
 
