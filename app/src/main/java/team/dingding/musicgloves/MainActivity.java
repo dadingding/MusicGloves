@@ -2,6 +2,7 @@ package team.dingding.musicgloves;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -18,95 +19,78 @@ import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 
 public class MainActivity extends Activity {
 
-    private SoundPool soundPool;
+//    private final Handler msgHandler = new Handler(){
+//        public void handleMessage(Message msg) {
+//        Toast.makeText(getApplicationContext(),msg.getData().getString("prompt") , Toast.LENGTH_SHORT).show();
+//            }
+//    };
+//
+//
+//    private void childProcessToast(String prompt){
+//        Message msg = msgHandler.obtainMessage();
+//        Bundle bd=new Bundle();
+//        bd.putString("prompt",prompt);
+//        msg.setData(bd);
+//        msgHandler.sendMessage(msg);
+//    }
 
-
-    private final Handler msgHandler = new Handler(){
-        public void handleMessage(Message msg) {
-        Toast.makeText(getApplicationContext(),msg.getData().getString("prompt") , Toast.LENGTH_SHORT).show();
-            }
-    };
-
-
-    private void childProcessToast(String prompt){
-        Message msg = msgHandler.obtainMessage();
-        Bundle bd=new Bundle();
-        bd.putString("prompt",prompt);
-        msg.setData(bd);
-        msgHandler.sendMessage(msg);
-    }
-
+    SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        soundPool = new SoundPool(10,AudioManager.STREAM_MUSIC,100);
-        final ProgressDialog dialog=ProgressDialog.show(this,
-                "loading music","wait...",true);
-        soundPool.load(this,R.raw.time1,1);
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
-            @Override
-            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
-                dialog.dismiss();
-                Toast.makeText(getBaseContext(),"Load success",Toast.LENGTH_SHORT).show();
-                }
-        });
-    }
-    public void PlayMusic(View v){
-        soundPool.play(1,1,1, 0, 0, 1);
-    }
-
-    public void StopPlay(View v){
 
     }
-
-    public void ceshi(View v){
-        WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
-        pc.registerMusicEvent("playmusic",new IProtocolCallBack() {
-            @Override
-            public void execute(Long cid, String argument) {
-                soundPool.play(1,1,1, 0, 0, 1);
-                childProcessToast(cid + " 事件"  + "playmusic" +" 参数" + argument);
-            }
-        });
-
-        pc.registerMusicEvent("bbbb",new IProtocolCallBack() {
-            @Override
-            public void execute(Long cid, String argument) {
-                childProcessToast(cid + " 事件"  + "bbbb" +" 参数" + argument);
-
-
-            }
-        });
-
-
-        pc.registerMusicEvent("cccc",new IProtocolCallBack() {
-            @Override
-            public void execute(Long cid, String argument) {
-                childProcessToast(cid + " 事件"  + "cccc" +" 参数" + argument);
-            }
-        });
-
-
-        pc.registerNetworkEvent("Connected", new IServerCallBack() {
-            @Override
-            public void execute(long cid) {
-                childProcessToast(cid + "连接成功");
-            }
-        });
-
-        pc.registerNetworkEvent("Disconnected", new IServerCallBack() {
-            @Override
-            public void execute(long cid) {
-                childProcessToast(cid + "连接断开");
-            }
-        });
-
-
-        pc.startApaAndServer("Billy", "12345678", 5000, 8081);
-
+    public void BeginPlay(View v){
+        startActivity(new Intent("team.dingding.musicgloves.MusicActivity"));
     }
+//    public void ceshi(View v){
+//        WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
+//        pc.registerMusicEvent("playmusic",new IProtocolCallBack() {
+//            @Override
+//            public void execute(Long cid, String argument) {
+////                soundPool.play(1,1,1, 0, 0, 1);
+//                childProcessToast(cid + " 事件"  + "playmusic" +" 参数" + argument);
+//            }
+//        });
+//
+//        pc.registerMusicEvent("bbbb",new IProtocolCallBack() {
+//            @Override
+//            public void execute(Long cid, String argument) {
+//                childProcessToast(cid + " 事件"  + "bbbb" +" 参数" + argument);
+//
+//
+//            }
+//        });
+//
+//
+//        pc.registerMusicEvent("cccc",new IProtocolCallBack() {
+//            @Override
+//            public void execute(Long cid, String argument) {
+//                childProcessToast(cid + " 事件"  + "cccc" +" 参数" + argument);
+//            }
+//        });
+//
+//
+//        pc.registerNetworkEvent("Connected", new IServerCallBack() {
+//            @Override
+//            public void execute(long cid) {
+//                childProcessToast(cid + "连接成功");
+//            }
+//        });
+//
+//        pc.registerNetworkEvent("Disconnected", new IServerCallBack() {
+//            @Override
+//            public void execute(long cid) {
+//                childProcessToast(cid + "连接断开");
+//            }
+//        });
+//
+//
+//        pc.startApaAndServer("Billy", "12345678", 5000, 8081);
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

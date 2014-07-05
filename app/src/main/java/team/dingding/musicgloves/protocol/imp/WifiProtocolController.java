@@ -1,16 +1,13 @@
 package team.dingding.musicgloves.protocol.imp;
 
 import android.content.Context;
-import android.os.Looper;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +18,7 @@ import team.dingding.musicgloves.network.intf.INetworkTransmission;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
+import team.dingding.musicgloves.protocol.intf.IProtocolController;
 
 /**
  * Created by Elega on 2014/7/3.

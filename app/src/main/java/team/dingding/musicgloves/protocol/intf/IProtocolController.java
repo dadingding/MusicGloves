@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.protocol.imp;
+package team.dingding.musicgloves.protocol.intf;
 
 import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
