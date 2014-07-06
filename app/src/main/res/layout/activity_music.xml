@@ -14,7 +14,7 @@
         android:id="@+id/button"
         android:layout_below="@+id/button"
         android:layout_marginTop="59dp"
-        android:onClick="playMusic"
+        android:onClick="BuildWifi"
         />
 
 </RelativeLayout>
