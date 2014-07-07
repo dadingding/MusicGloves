@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import team.dingding.musicgloves.R;
+import team.dingding.musicgloves.music.impl.MusicControlImpl;
+import team.dingding.musicgloves.music.intf.IPlayMusic;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
@@ -28,7 +30,7 @@ public class MusicActivity extends Activity {
             Toast.makeText(getApplicationContext(),msg.getData().getString("prompt") , Toast.LENGTH_SHORT).show();
         }
     };
-
+    MusicControlImpl sound;
     private void childProcessToast(String prompt){
         Message msg = msgHandler.obtainMessage();
         Bundle bd=new Bundle();
@@ -37,26 +39,17 @@ public class MusicActivity extends Activity {
         msgHandler.sendMessage(msg);
     }
 
-    SoundPool soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,10);
-    int loadmark=0;
-    int currplay=0;
-    HashMap<Integer, Integer> soundMap = new HashMap<Integer, Integer>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
-        LoadMusic(1);
-    }
-    public void playMusic(View v){
-        soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
-        currplay=soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
-//        soundPool.play(soundMap.get(3), 1, 1, 0, 0, 1);
+        sound=new MusicControlImpl(this);
+        sound.load();
     }
 
     public void onStop(){
         super.onStop();
-        if(currplay!=0)
-            soundPool.stop(currplay);
+        sound.stopAll();
 
     }
     public void PauseMusic(View v){
@@ -67,47 +60,11 @@ public class MusicActivity extends Activity {
 
     }
 
-    public void  LoadMusic(int instrument){
-        final ProgressDialog dialog=ProgressDialog.show(this,
-                "loading music","wait...",true);
 
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
-            @Override
-            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
-                soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
-            }});
-
-        soundMap.put(1, soundPool.load(this, R.raw.doo, 1));
-        soundMap.put(2, soundPool.load(this, R.raw.re, 1));
-        soundMap.put(3, soundPool.load(this, R.raw.mi, 1));
-        soundMap.put(4, soundPool.load(this, R.raw.fa, 1));
-        soundMap.put(5, soundPool.load(this, R.raw.so, 1));
-        soundMap.put(6, soundPool.load(this, R.raw.la, 1));
-        soundMap.put(7, soundPool.load(this, R.raw.xi, 1));
-        soundMap.put(8, soundPool.load(this, R.raw.hdo, 1));
-
-
-
-
-
-
-
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
-            @Override
-            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
-                loadmark = loadmark + 1;
-                if (loadmark == 2) {
-                    dialog.dismiss();
-                    Toast.makeText(getBaseContext(), String.valueOf(loadmark)+"Load success", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
     public void BuildWifi(View v){
         Random a=new Random();
         Button b=(Button) v;
-        soundPool.play(soundMap.get(Integer.valueOf(b.getText().toString() )  ), 1, 1, 0, 0, 1);
+        sound.play(Integer.valueOf(b.getText().toString()));
         /*
         WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
         pc.registerMusicEvent("doo",new IProtocolCallBack() {
