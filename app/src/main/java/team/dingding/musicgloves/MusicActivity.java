@@ -10,9 +10,11 @@ import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import team.dingding.musicgloves.R;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
@@ -68,8 +70,28 @@ public class MusicActivity extends Activity {
     public void  LoadMusic(int instrument){
         final ProgressDialog dialog=ProgressDialog.show(this,
                 "loading music","wait...",true);
-        soundMap.put(1, soundPool.load(this, R.raw.life, 1));
-        soundMap.put(2, soundPool.load(this, R.raw.sky, 1));
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
+            }});
+
+        soundMap.put(1, soundPool.load(this, R.raw.doo, 1));
+        soundMap.put(2, soundPool.load(this, R.raw.re, 1));
+        soundMap.put(3, soundPool.load(this, R.raw.mi, 1));
+        soundMap.put(4, soundPool.load(this, R.raw.fa, 1));
+        soundMap.put(5, soundPool.load(this, R.raw.so, 1));
+        soundMap.put(6, soundPool.load(this, R.raw.la, 1));
+        soundMap.put(7, soundPool.load(this, R.raw.xi, 1));
+        soundMap.put(8, soundPool.load(this, R.raw.hdo, 1));
+
+
+
+
+
+
+
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
             @Override
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
@@ -83,12 +105,16 @@ public class MusicActivity extends Activity {
 
     }
     public void BuildWifi(View v){
+        Random a=new Random();
+        Button b=(Button) v;
+        soundPool.play(soundMap.get(Integer.valueOf(b.getText().toString() )  ), 1, 1, 0, 0, 1);
+        /*
         WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
-        pc.registerMusicEvent("do",new IProtocolCallBack() {
+        pc.registerMusicEvent("doo",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
                  soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
-                childProcessToast(cid + " 事件"  + "do" +" 参数" + argument);
+                childProcessToast(cid + " 事件"  + "doo" +" 参数" + argument);
             }
         });
 
@@ -128,10 +154,11 @@ public class MusicActivity extends Activity {
 
 
         pc.startApaAndServer("Billy", "12345678", 5000, 8081);
-
+        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.music, menu);
         return true;

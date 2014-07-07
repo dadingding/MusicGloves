@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 
     }
     public void BeginPlay(View v){
+
         startActivity(new Intent("team.dingding.musicgloves.MusicActivity"));
     }
 //    public void ceshi(View v){
