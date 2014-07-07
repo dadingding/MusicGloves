@@ -54,9 +54,7 @@ public class MusicControlImpl implements IPlayMusic {
             @Override
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
-                Toast.makeText(mContext, String.valueOf(loadcount),
-                        Toast.LENGTH_SHORT).show();
-                if (loadcount == 6) {
+                if (loadcount == 8) {
                     dialog.dismiss();
                     loadsign=true;
                     }
@@ -66,9 +64,7 @@ public class MusicControlImpl implements IPlayMusic {
             @Override
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
-                Toast.makeText(mContext, String.valueOf(loadcount),
-                        Toast.LENGTH_SHORT).show();
-                if (loadcount == 6) {
+                if (loadcount == 8) {
                     dialog.dismiss();
                     loadsign=true;
                 }
