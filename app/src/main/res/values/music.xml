@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="instruments">
+        <item>钢琴</item>
+        <item>吉他</item>
+        <item>口琴</item>
+        <item>魔幻哲学电子音</item>
+    </string-array>
+
+    <string-array name="scales">
+        <item>C大调</item>
+        <item>C小调</item>
+        <item>D大调</item>
+        <item>D小调</item>
+    </string-array>
+</resources>

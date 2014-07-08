@@ -7,6 +7,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ public class MusicActivity extends Activity {
 
     private final Handler msgHandler = new Handler(){
         public void handleMessage(Message msg) {
+
             Toast.makeText(getApplicationContext(),msg.getData().getString("prompt") , Toast.LENGTH_SHORT).show();
         }
     };
@@ -85,6 +87,8 @@ public class MusicActivity extends Activity {
             @Override
             public void execute(long cid) {
                 childProcessToast(cid + "连接成功");
+                Log.v("233", cid + "连接成功");
+
             }
         });
 

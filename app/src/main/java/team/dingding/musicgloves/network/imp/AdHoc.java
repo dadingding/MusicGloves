@@ -216,7 +216,6 @@ public class AdHoc implements INetworkTransmission {
            }
            in.close();
            socket.close();
-           Log.v("233","233");
            if (eventDisconnected!=null) eventDisconnected.execute(cid);
        } catch (IOException e) {
            client.connectingState = ConnectingState.failed;
