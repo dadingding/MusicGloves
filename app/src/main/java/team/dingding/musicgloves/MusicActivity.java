@@ -60,39 +60,25 @@ public class MusicActivity extends Activity {
 
     }
 
-
-    public void BuildWifi(View v){
-        Random a=new Random();
+    public void PlayMusic(View v){
         Button b=(Button) v;
         sound.play(Integer.valueOf(b.getText().toString()));
-        /*
+    }
+
+    public void BuildWifi(View v){
+
+
         WifiProtocolController pc=new WifiProtocolController(this.getApplicationContext());
-        pc.registerMusicEvent("doo",new IProtocolCallBack() {
+        pc.registerMusicEvent("playMusic",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                 soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
-                childProcessToast(cid + " 事件"  + "doo" +" 参数" + argument);
-            }
-        });
-
-        pc.registerMusicEvent("re",new IProtocolCallBack() {
-            @Override
-            public void execute(Long cid, String argument) {
-                soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
-                childProcessToast(cid + " 事件"  + "re" +" 参数" + argument);
-
-
+                int res=Integer.valueOf(argument);
+                sound.play(res);
+                childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
             }
         });
 
 
-        pc.registerMusicEvent("mi",new IProtocolCallBack() {
-            @Override
-            public void execute(Long cid, String argument) {
-                soundPool.play(soundMap.get(3), 1, 1, 0, 0, 1);
-                childProcessToast(cid + " 事件"  + "mi" +" 参数" + argument);
-            }
-        });
 
 
         pc.registerNetworkEvent("Connected", new IServerCallBack() {
@@ -111,7 +97,7 @@ public class MusicActivity extends Activity {
 
 
         pc.startApaAndServer("Billy", "12345678", 5000, 8081);
-        */
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
