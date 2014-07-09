@@ -100,6 +100,15 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="stop"
+            android:id="@+id/button12"
+            android:layout_row="5"
+            android:layout_column="0"
+            android:onClick="StopMusic"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="造歪法"
             android:id="@+id/wifiwifi"
             android:layout_row="6"

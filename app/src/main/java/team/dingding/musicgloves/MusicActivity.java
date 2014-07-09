@@ -46,7 +46,7 @@ public class MusicActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
         sound=new MusicControlImpl(this);
-        sound.load();
+        sound.load(2);
     }
 
     public void onStop(){
@@ -59,7 +59,7 @@ public class MusicActivity extends Activity {
     }
 
     public void StopMusic(View v){
-
+        sound.stopAll();
     }
 
     public void PlayMusic(View v){
