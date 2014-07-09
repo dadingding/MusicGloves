@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.notimped;
+package team.dingding.musicgloves.activity;
 
 
 import android.app.ActionBar;

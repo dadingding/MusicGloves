@@ -15,7 +15,8 @@
         android:layout_width="354dp"
         android:layout_height="wrap_content"
         android:text="载入音频文件"
-        android:id="@+id/btnFuncLoadMusic" />
+        android:id="@+id/btnFuncLoadMusic"
+        />
 
     <Button
         android:layout_width="352dp"

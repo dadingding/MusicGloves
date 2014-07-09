@@ -1,37 +1,68 @@
-package team.dingding.musicgloves.notimped;
+package team.dingding.musicgloves.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
+import team.dingding.musicgloves.music.impl.MusicControlImpl;
+import team.dingding.musicgloves.network.imp.ClientManager;
+import team.dingding.musicgloves.network.intf.IServerCallBack;
+import team.dingding.musicgloves.network.intf.IWifiAp;
+import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
+import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
+import team.dingding.musicgloves.protocol.intf.IProtocolController;
 
 
-public class MyActivity extends Activity
+public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
+    private MusicControlImpl sound;
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
+    private IProtocolController mPC;
+    private ClientManager mCM;
+
+
+    private final Handler msgHandler = new Handler(){
+        public void handleMessage(Message msg) {
+            Toast.makeText(getApplicationContext(), msg.getData().getString("prompt"), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public void childProcessToast(String prompt){
+        Message msg = msgHandler.obtainMessage();
+        Bundle bd=new Bundle();
+        bd.putString("prompt",prompt);
+        msg.setData(bd);
+        msgHandler.sendMessage(msg);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -41,6 +72,32 @@ public class MyActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        mPC=new WifiProtocolController(this.getBaseContext());
+        mPC.registerNetworkEvent("Connected", new IServerCallBack() {
+            @Override
+            public void execute(long cid) {
+                connectSucceed(cid);
+            }
+        });
+        mPC.registerNetworkEvent("Disconnected", new IServerCallBack() {
+            @Override
+            public void execute(long cid) {
+                disconnect(cid);
+            }
+        });
+        mPC.registerMusicEvent("playMusic",new IProtocolCallBack() {
+            @Override
+            public void execute(Long cid, String argument) {
+                int res=Integer.valueOf(argument);
+                sound.play(res);
+                childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
+            }
+        });
+
+
+        sound=new MusicControlImpl(this);
+        mCM=new ClientManager();
     }
 
     @Override
@@ -113,6 +170,48 @@ public class MyActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    public IProtocolController getProtocolController(){
+        return mPC;
+    }
+
+    public MusicControlImpl getMusicControl(){
+        return sound;
+    }
+
+    public ClientManager getClientManager(){
+        return mCM;
+    }
+
+
+    private void connectSucceed(long cid){
+        mCM.addClient(cid);
+        this.childProcessToast(cid + "连接成功");
+        Log.v("233", cid + "连接成功");
+        /*
+        StateFragment sf=(StateFragment)getFragmentManager().findFragmentById(R.id.fragState);
+        Log.v("233", ""+(sf==null));
+        if (sf!=null){
+          sf.updateText();
+        }
+        */
+    }
+    private void disconnect(long cid){
+        mCM.removeClient(cid);
+        this.childProcessToast(cid + "连接断开");
+        Log.v("233", cid + "连接断开");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -141,16 +240,21 @@ public class MyActivity extends Activity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_my, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
 
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MyActivity) activity).onSectionAttached(
+            ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+
+        public MainActivity getMainActivity(){
+            return (MainActivity) getActivity();
+        }
     }
+
 
 }

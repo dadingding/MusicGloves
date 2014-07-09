@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.notimped;
+package team.dingding.musicgloves.activity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ import team.dingding.musicgloves.R;
 /**
  * Created by Elega on 2014/7/8.
  */
-public class SettingFragment extends MyActivity.PlaceholderFragment {
+public class SettingFragment extends MainActivity.PlaceholderFragment {
     Spinner spInstrument;
     Spinner spScale;
     ArrayAdapter adInstrument;
@@ -32,7 +32,7 @@ public class SettingFragment extends MyActivity.PlaceholderFragment {
         return rootView;
     }
 
-    public static MyActivity.PlaceholderFragment newInstance(int sectionNumber) {
+    public static MainActivity.PlaceholderFragment newInstance(int sectionNumber) {
         SettingFragment fragment = new SettingFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
