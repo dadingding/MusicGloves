@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.暂时未完成;
+package team.dingding.musicgloves.notimped;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
