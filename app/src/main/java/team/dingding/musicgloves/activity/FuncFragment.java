@@ -55,7 +55,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
     public void btnFuncLoadMusicOnClick(View v){
         sound=getMainActivity().getMusicControl();
         if (sound!=null) {
-            if (sound.load()) {
+            if (sound.load(2)) {
                 Toast.makeText(this.getActivity().getApplicationContext(),
                         "音乐载入成功", Toast.LENGTH_SHORT).show();
             } else {

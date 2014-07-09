@@ -41,11 +41,17 @@ public class MainActivity extends Activity
 
     private IProtocolController mPC;
     private ClientManager mCM;
-
+    private StateFragment mSF;
 
     private final Handler msgHandler = new Handler(){
         public void handleMessage(Message msg) {
             Toast.makeText(getApplicationContext(), msg.getData().getString("prompt"), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private final Handler updateHandler= new Handler(){
+        public void handleMessage(Message msg) {
+            mSF.updateText();
         }
     };
 
@@ -111,8 +117,9 @@ public class MainActivity extends Activity
                         .commit();
                 break;
             case 1:
+                mSF=(StateFragment) StateFragment.newInstance(position + 1);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, StateFragment.newInstance(position + 1))
+                        .replace(R.id.container,mSF )
                         .commit();
                 break;
             case 2:
@@ -187,18 +194,14 @@ public class MainActivity extends Activity
         mCM.addClient(cid);
         this.childProcessToast(cid + "连接成功");
         Log.v("233", cid + "连接成功");
-        /*
-        StateFragment sf=(StateFragment)getFragmentManager().findFragmentById(R.id.fragState);
-        Log.v("233", ""+(sf==null));
-        if (sf!=null){
-          sf.updateText();
-        }
-        */
+        updateHandler.sendMessage(new Message());
+
     }
     private void disconnect(long cid){
         mCM.removeClient(cid);
         this.childProcessToast(cid + "连接断开");
         Log.v("233", cid + "连接断开");
+        updateHandler.sendMessage(new Message());
     }
 
 

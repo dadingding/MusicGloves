@@ -69,8 +69,8 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
                     loadsign=true;
+                    dialog.dismiss();
                     }
             }
         });
@@ -79,12 +79,13 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
                     loadsign=true;
+                    dialog.dismiss();
+
                 }
             }
         });
-        return loadsign;
+        return true;
     }
     //播放某个音乐
     public void play(int music){
