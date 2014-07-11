@@ -28,7 +28,6 @@ import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
-import team.dingding.musicgloves.utils.StopWatch;
 
 
 public class MainActivity extends Activity
@@ -218,6 +217,8 @@ public class MainActivity extends Activity
 
 
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -261,6 +262,8 @@ public class MainActivity extends Activity
             return (MainActivity) getActivity();
         }
     }
-
+    public void play(View v){
+        sound.play(6);
+    }
 
 }

@@ -1,5 +1,7 @@
 package team.dingding.musicgloves.music.intf;
 
+import android.widget.SeekBar;
+
 /**
  * Created by Elega on 2014/7/7.
  */
@@ -16,4 +18,6 @@ public interface IPlayMusic {
     public void setVolume(int value);
     //获得当前音量值
     public int getVolume();
+    //把音乐音量调节和Seekbar联系起来
+    public void volumeMatch(SeekBar seek);
 }

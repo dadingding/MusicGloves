@@ -1,15 +1,18 @@
 package team.dingding.musicgloves.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import team.dingding.musicgloves.R;
+import team.dingding.musicgloves.music.impl.MusicControlImpl;
 
 
 /**
@@ -22,7 +25,7 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
     ArrayAdapter adScale;
     TextView volume;
     SeekBar seekBar;
-
+    MusicControlImpl sound;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,27 +44,54 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
     }
 
     private void loadSpinner(View v){
+        sound = getMainActivity().getMusicControl();
         spInstrument=(Spinner)v.findViewById(R.id.spinnerSettingInstrument);
         adInstrument= ArrayAdapter.createFromResource(this.getActivity().getBaseContext(), R.array.instruments, android.R.layout.simple_spinner_item);
         adInstrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInstrument.setAdapter(adInstrument);
-        spInstrument.setOnItemSelectedListener(null);
+        spInstrument.setSelection(1);
+        spInstrument.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                //Log.d("mark", "onItemSelected1() is invoked!");
+                sound.load(arg2);
+                arg0.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         spInstrument.setVisibility(View.VISIBLE);
 
         spScale=(Spinner)v.findViewById(R.id.spinnerSettingScales);
         adScale= ArrayAdapter.createFromResource(this.getActivity().getBaseContext(), R.array.scales, android.R.layout.simple_spinner_item);
         adScale.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spScale.setAdapter(adScale);
-        spScale.setOnItemSelectedListener(null);
+        spScale.setSelection(1);
+        spScale.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                Log.d("mark", String.valueOf(arg3)+"onItemSelected2() is invoked!");
+                arg0.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         spScale.setVisibility(View.VISIBLE);
 
         volume=(TextView)v.findViewById(R.id.textSettingVolume);
         seekBar=(SeekBar)v.findViewById(R.id.seekbarSettingVolume);
-
+        sound.volumeMatch(seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 volume.setText("音量：" + i);
+                sound.setVolume(i);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}

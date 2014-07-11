@@ -51,7 +51,7 @@
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:background="@drawable/pic_about"
-
+                       android:onClick="play"
 
             />
 

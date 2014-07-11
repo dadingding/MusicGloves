@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -30,10 +31,11 @@ public class MusicControlImpl implements IPlayMusic {
         currplay=new int[8];
         for(int i=0;i<8;i++)
             currplay[i]=0;
-        soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,10);
-        soundPool2 = new SoundPool(10, AudioManager.STREAM_SYSTEM,10);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
+        soundPool2 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
         soundMap = new HashMap<Integer, Integer>();
         am=(AudioManager) context.getSystemService(context.AUDIO_SERVICE);
+
     }
     public boolean load(int kind){
         loadsign=false;
@@ -42,7 +44,7 @@ public class MusicControlImpl implements IPlayMusic {
                 "loading music","wait...",true);
         switch (kind){
 
-            case 1:
+            case 0:
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.cre, 1));
                 soundMap.put(3, soundPool.load(mContext, R.raw.cmi, 1));
@@ -52,7 +54,7 @@ public class MusicControlImpl implements IPlayMusic {
                 soundMap.put(7, soundPool2.load(mContext, R.raw.cxi, 1));
                 soundMap.put(8, soundPool2.load(mContext, R.raw.chdo, 1));
                 break;
-            case 2:
+            case 1:
                 soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_25, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_26, 1));
                 soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_27, 1));
@@ -69,8 +71,8 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    loadsign=true;
                     dialog.dismiss();
+                    loadsign=true;
                     }
             }
         });
@@ -79,12 +81,12 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    loadsign=true;
                     dialog.dismiss();
-
+                    loadsign=true;
                 }
             }
         });
+
         return true;
     }
     //播放某个音乐
@@ -107,13 +109,24 @@ public class MusicControlImpl implements IPlayMusic {
         for(int i=1;i<=8;i++)
             stop(i);
     }
-    //设置音量（可以先不写）
+    //设置音量
     public void setVolume(int value){
-
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, value, 0);
     }
+
     //获得当前音量值
     public int getVolume(){
-        int current =am.getStreamVolume( AudioManager.STREAM_SYSTEM );
+        int current =am.getStreamVolume( AudioManager.STREAM_MUSIC);
         return current;
     }
+
+    //把音乐音量调节和Seekbar联系起来
+    public void volumeMatch(SeekBar seek){
+        int mVolume = getVolume(); //获取当前音乐音量
+        seek.setMax(am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)); //SEEKBAR设置为音量的最大阶数
+        seek.setProgress(mVolume); //设置seekbar为当前音量进度
+
+    }
+
+
 }
