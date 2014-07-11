@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
@@ -30,14 +31,18 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
         View rootView = inflater.inflate(R.layout.fragment_func, container, false);
 
 
-        ((Button)rootView.findViewById(R.id.btnFuncLoadMusic)).setOnClickListener(new View.OnClickListener(){
+        ((ImageButton)rootView.findViewById(R.id.btnFuncLoadMusic)).setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){btnFuncLoadMusicOnClick(v);}
         });
 
-        ((Button)rootView.findViewById(R.id.btnFuncSetWifi)).setOnClickListener(new View.OnClickListener(){
+
+        ((ImageButton)rootView.findViewById(R.id.btnFuncSetWifi)).setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){btnFuncSetWifiOnClick(v);}
         });
 
+        ((ImageButton)rootView.findViewById(R.id.btnFuncQuit)).setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View v){btnFuncQuitOnClick(v);}
+        });
 
         return rootView;
     }
@@ -73,7 +78,9 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
     }
 
 
-
+    public void btnFuncQuitOnClick(View v){
+        System.exit(0);
+    }
 
 
 

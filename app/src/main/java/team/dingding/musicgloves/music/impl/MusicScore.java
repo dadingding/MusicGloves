@@ -1,6 +1,7 @@
 package team.dingding.musicgloves.music.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ public class MusicScore {
     private Vector<Note> note;
     private String mScale;
     private String mInstrument;
+    private boolean run=false;
 
     public MusicScore(String instrument,String scale){
         mScale=scale;
@@ -34,11 +36,16 @@ public class MusicScore {
 
     public void begin(){
         sp.start();
+        run=true;
     }
     public void end(){
         sp.stop();
     }
     public void append(int sound){
+        if (!run){
+            sp.start();
+            run=true;
+        }
         note.addElement(new Note(sp.getTime(),sound));
     }
     public Boolean save(Context context,String filename){
@@ -98,6 +105,26 @@ public class MusicScore {
     }
 
 
+    //调试用
+    public static void printAll(Context context,String filename){
+        try {
+            FileInputStream ifs = context.openFileInput(filename);
+            byte[] buf=new byte[1024];
+            String all="";
+            int length;
+            while ((length=ifs.read(buf))!=-1){
+                all+=new String(buf,0,length);
+            }
+            ifs.close();
+            String[] line=all.split("\n");
+            for (int i=0;i<line.length;++i){
+                Log.v("233",line[i]);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

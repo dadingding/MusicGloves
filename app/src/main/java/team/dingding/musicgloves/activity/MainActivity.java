@@ -210,21 +210,6 @@ public class MainActivity extends Activity
         updateHandler.sendMessage(new Message());
     }
 
-    public  void test(View v){
-        if (ms==null){
-            ms=new MusicScore("肛琴","C大屌");
-        }
-        else{
-            Random r=new Random();
-            ms.append(r.nextInt());
-        }
-    }
-
-    public  void test2(View v){
-
-        //ms.save(v.getContext(),"fuck.log");
-        Log.v("233", getApplicationContext().getPackageCodePath());
-    }
 
 
 
