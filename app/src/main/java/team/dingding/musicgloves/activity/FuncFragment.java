@@ -1,5 +1,6 @@
 package team.dingding.musicgloves.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,11 +80,11 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
     public void btnFuncQuitOnClick(View v){
+        SharedPreferences.Editor editor = getMainActivity().getSp().edit();
+        //修改数据
+        editor.putInt("Source_Key", getMainActivity().getSource());
+        editor.putInt("Scale_Key", getMainActivity().getScale());
+        editor.commit();
         System.exit(0);
     }
-
-
-
-
-
 }

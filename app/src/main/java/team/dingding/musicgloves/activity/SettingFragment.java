@@ -49,13 +49,14 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
         adInstrument= ArrayAdapter.createFromResource(this.getActivity().getBaseContext(), R.array.instruments, android.R.layout.simple_spinner_item);
         adInstrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInstrument.setAdapter(adInstrument);
-        spInstrument.setSelection(1);
+        spInstrument.setSelection(getMainActivity().getSource());
         spInstrument.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 //Log.d("mark", "onItemSelected1() is invoked!");
                 sound.load(arg2);
+                getMainActivity().setSource(arg2);
                 arg0.setVisibility(View.VISIBLE);
             }
 
@@ -69,12 +70,12 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
         adScale= ArrayAdapter.createFromResource(this.getActivity().getBaseContext(), R.array.scales, android.R.layout.simple_spinner_item);
         adScale.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spScale.setAdapter(adScale);
-        spScale.setSelection(1);
+        spScale.setSelection(getMainActivity().getScale());
         spScale.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                Log.d("mark", String.valueOf(arg3)+"onItemSelected2() is invoked!");
+                getMainActivity().setScale(arg2);
                 arg0.setVisibility(View.VISIBLE);
             }
 

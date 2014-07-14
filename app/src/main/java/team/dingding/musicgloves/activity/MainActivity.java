@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,35 @@ public class MainActivity extends Activity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private MusicControlImpl sound;
     private MusicScore ms;
+
+    public SharedPreferences getSp() {
+        return sp;
+    }
+
+
+    SharedPreferences sp;//数据持久化
+    public final String SourceKey = "Source_Key";
+    public final String ScaleKey = "Scale_Key";
+
+    int source=1;
+    int scale=1;
+    public int getSource() {
+        return source;
+    }
+
+    public void setSource(int source) {
+        this.source = source;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
+    }
+
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -109,8 +139,39 @@ public class MainActivity extends Activity
 
         sound=new MusicControlImpl(this);
         mCM=new ClientManager();
-    }
 
+        sp =getSharedPreferences("setting",MODE_WORLD_READABLE|MODE_WORLD_WRITEABLE);
+        source = sp.getInt(SourceKey,-1);
+
+        if (source == -1) {
+            source=0;
+        }
+        scale = sp.getInt(ScaleKey, -1);
+        if (scale == -1) {
+            scale=0;
+        }
+
+    }
+    @Override
+    protected void onDestroy() {
+        //获得SharedPreferences 的Editor对象
+        SharedPreferences.Editor editor = sp.edit();
+        //修改数据
+        editor.putInt(SourceKey, source);
+        editor.putInt(ScaleKey, scale);
+        editor.commit();
+        super.onDestroy();
+    }
+    @Override
+    protected void onStop() {
+        //获得SharedPreferences 的Editor对象
+        SharedPreferences.Editor editor = sp.edit();
+        //修改数据
+        editor.putInt(SourceKey, source);
+        editor.putInt(ScaleKey, scale);
+        editor.commit();
+        super.onStop();
+    }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -194,7 +255,6 @@ public class MainActivity extends Activity
         return mCM;
     }
 
-
     private void connectSucceed(long cid){
         mCM.addClient(cid);
         this.childProcessToast(cid + "连接成功");
@@ -262,8 +322,8 @@ public class MainActivity extends Activity
             return (MainActivity) getActivity();
         }
     }
-    public void play(View v){
-        sound.play(6);
+        public void play(View v){
+            sound.play(6);
     }
 
 }
