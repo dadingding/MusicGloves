@@ -10,8 +10,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimerTask;
 import java.util.Vector;
+import java.util.Timer;
 
+
+import team.dingding.musicgloves.music.intf.IPlayMusic;
+import team.dingding.musicgloves.utils.ReschedulableTimerTask;
 import team.dingding.musicgloves.utils.StopWatch;
 
 /**
@@ -27,6 +34,9 @@ public class MusicScore {
     private String mScale;
     private String mInstrument;
     private boolean run=false;
+    private long nowTime=0;
+    private int nowPos=0;
+    private TimerTask task=null;
 
     public MusicScore(String instrument,String scale){
         mScale=scale;
@@ -126,6 +136,30 @@ public class MusicScore {
         }
     }
 
+    public void play(final IPlayMusic pm){
+        nowTime=0;
+        nowPos=0;
+        task=new TimerTask() {
+            @Override
+            public void run() {
+                nowTime+=100;
+                while(nowPos<note.size() && note.get(nowPos).time<nowTime){
+                    pm.play(note.get(nowPos).note);
+                    nowPos++;
+                }
+                if (nowPos>=note.size())
+                    this.cancel();
+
+            }
+        };
+        Timer t=new Timer();
+        t.scheduleAtFixedRate(task,50,50);
+    }
+
+    public void stop(){
+        if (task!=null)
+            task.cancel();
+    }
 
 
 

@@ -271,6 +271,29 @@ public class MainActivity extends Activity
 
 
 
+    public  void test(View v){
+        ms=MusicScore.fromFile(v.getContext(),"fuck.log");
+        ms.play(getMusicControl());
+    /*
+        if (ms==null){
+            ms=new MusicScore("肛琴","C大调");
+        }
+        else{
+            Random r=new Random();
+            ms.append(r.nextInt());
+        }
+    */
+    }
+
+    public  void test2(View v){
+        Log.v("233",""+(ms==null));
+        if (ms!=null)
+        ms.stop();
+
+//        ms.save(v.getContext(),"fuck.log");
+        //Log.v("233", getApplicationContext().getPackageCodePath());
+    }
+
 
 
 
