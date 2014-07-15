@@ -190,6 +190,11 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 fragmentManager.beginTransaction()
+                        .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 3:
+                fragmentManager.beginTransaction()
                         .replace(R.id.container, SettingFragment.newInstance(position + 1))
                         .commit();
                 break;
@@ -205,7 +210,10 @@ public class MainActivity extends Activity
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle=getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
@@ -271,28 +279,6 @@ public class MainActivity extends Activity
 
 
 
-    public  void test(View v){
-        ms=MusicScore.fromFile(v.getContext(),"fuck.log");
-        ms.play(getMusicControl());
-    /*
-        if (ms==null){
-            ms=new MusicScore("肛琴","C大调");
-        }
-        else{
-            Random r=new Random();
-            ms.append(r.nextInt());
-        }
-    */
-    }
-
-    public  void test2(View v){
-        Log.v("233",""+(ms==null));
-        if (ms!=null)
-        ms.stop();
-
-//        ms.save(v.getContext(),"fuck.log");
-        //Log.v("233", getApplicationContext().getPackageCodePath());
-    }
 
 
 
