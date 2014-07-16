@@ -12,56 +12,164 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="#0000AA"
         android:orientation="horizontal"
         android:layout_height="match_parent"
         android:layout_weight="1"
         >
 
-
-        <ImageButton
-            android:layout_width="fill_parent"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="fill_parent"
-            android:background="@drawable/pic_lm"
-            android:id="@+id/btnFuncLoadMusic"
-            />
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/pic_lm"
+                android:id="@+id/btnFuncLoadMusic"
+                android:clickable="true"
 
-        <ImageButton
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="载入音源"
+                android:textSize="18dip"
+                />
+        </FrameLayout>
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/pic_wifi"
-            android:id="@+id/btnFuncSetWifi"
-            />
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/pic_wifi"
+                android:id="@+id/btnFuncSetWifi"
+                android:clickable="true"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="建立服务器"
+                android:textSize="18dip"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="#0000AA"
         android:orientation="horizontal"
         android:layout_height="match_parent"
         android:layout_weight="1"
         >
 
-
-        <ImageButton
-            android:layout_width="fill_parent"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_height="fill_parent"
-            android:background="@drawable/pic_about"
-                       android:onClick="play"
+            >
 
-            />
-
-        <ImageButton
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/pic_exit"
-            android:id="@+id/btnFuncQuit"
-            />
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/pic_glove_cnt"
+                android:clickable="true"
+                android:id="@+id/ivStateDevice0"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="设备1"
+                android:textSize="18dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="已连接"
+                android:textSize="18dip"
+                android:id="@+id/textStateCntState0"
+
+                />
+        </FrameLayout>
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+
+                >
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pic_glove_dis"
+                    android:clickable="true"
+                    android:id="@+id/ivStateDevice1"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="设备2"
+                    android:textSize="18dip"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="未连接"
+                    android:textSize="18dip"
+                    android:id="@+id/textStateCntState1"
+
+                    />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/pic_exit"
+                android:id="@+id/btnFuncQuit"
+                android:clickable="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="退出"
+                android:textSize="18dip"
+                android:id="@+id/textMsMakeorsave"
+
+                />
+        </FrameLayout>
 
     </LinearLayout>
 

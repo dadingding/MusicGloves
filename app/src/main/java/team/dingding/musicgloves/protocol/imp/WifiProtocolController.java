@@ -19,6 +19,7 @@ import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
+import team.dingding.musicgloves.protocol.intf.IStartWifiCallBack;
 
 /**
  * Created by Elega on 2014/7/3.
@@ -52,14 +53,27 @@ public class WifiProtocolController implements IProtocolController {
 
     //启动Wifi热点和服务器
     @Override
-    public boolean startApaAndServer(String ssid, String password, int latency, int port)
+    public void startApaAndServer(final String ssid, final String password, final int latency, final int port,final IStartWifiCallBack success,final IStartWifiCallBack fail)
     {
-        if (wifiAp.startWifiAp(ssid,password,latency)){
-            adhoc.startServer(port);
-        }
-        else
-            return false;
-        return false;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (wifiAp.startWifiAp(ssid,password,latency)){
+
+                adhoc.startServer(port);
+                if (success!=null)
+                    success.execute();
+            }
+            else
+                if (fail!=null)
+                    fail.execute();
+
+            }
+
+        });
+        thread.start();
+
+
     }
 
 

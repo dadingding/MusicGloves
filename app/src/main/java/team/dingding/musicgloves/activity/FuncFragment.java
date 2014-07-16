@@ -1,5 +1,6 @@
 package team.dingding.musicgloves.activity;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
@@ -16,6 +19,7 @@ import team.dingding.musicgloves.music.intf.IPlayMusic;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
+import team.dingding.musicgloves.protocol.intf.IStartWifiCallBack;
 
 /**
  * Created by Elega on 2014/7/8.
@@ -24,6 +28,12 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
     private IProtocolController mPC;
     private IPlayMusic sound;
+    private ClientManager mCM;
+    private TextView[] textState;
+    private ImageView[] ivDevice;
+
+
+
 //    private ClientManager mCM;
 
     @Override
@@ -32,20 +42,49 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
         View rootView = inflater.inflate(R.layout.fragment_func, container, false);
 
 
-        ((ImageButton)rootView.findViewById(R.id.btnFuncLoadMusic)).setOnClickListener(new View.OnClickListener(){
+        ((ImageView)rootView.findViewById(R.id.btnFuncLoadMusic)).setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){btnFuncLoadMusicOnClick(v);}
         });
 
 
-        ((ImageButton)rootView.findViewById(R.id.btnFuncSetWifi)).setOnClickListener(new View.OnClickListener(){
+        ((ImageView)rootView.findViewById(R.id.btnFuncSetWifi)).setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){btnFuncSetWifiOnClick(v);}
         });
 
-        ((ImageButton)rootView.findViewById(R.id.btnFuncQuit)).setOnClickListener(new View.OnClickListener(){
+        ((ImageView)rootView.findViewById(R.id.btnFuncQuit)).setOnClickListener(new View.OnClickListener(){
             @Override public void onClick(View v){btnFuncQuitOnClick(v);}
         });
 
+
+        textState=new TextView[2];
+        ivDevice=new ImageView[2];
+        textState[0]=(TextView)rootView.findViewById(R.id.textStateCntState0);
+        textState[1]=(TextView)rootView.findViewById(R.id.textStateCntState1);
+        ivDevice[0]=(ImageView)rootView.findViewById(R.id.ivStateDevice0);
+        ivDevice[1]=(ImageView)rootView.findViewById(R.id.ivStateDevice1);
+
+        mCM=this.getMainActivity().getClientManager();
+
+        updateText();
+
+
         return rootView;
+    }
+
+
+    public void updateText(){
+        Log.v("233", "23333");
+        for (int i=0;i<2;++i){
+            if (mCM.isConnected(i)) {
+                textState[i].setText("已连接");
+                ivDevice[i].setImageDrawable(getResources().getDrawable(R.drawable.pic_glove_cnt) );
+            }
+            else {
+                textState[i].setText("未连接");
+                ivDevice[i].setImageDrawable(getResources().getDrawable(R.drawable.pic_glove_dis) );
+
+            }
+        }
     }
 
     public static MainActivity.PlaceholderFragment newInstance(int sectionNumber) {
@@ -74,8 +113,21 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
     public void btnFuncSetWifiOnClick(View v){
+        final ProgressDialog dialog=ProgressDialog.show(v.getContext(),
+                "正在开启Wifi热点并架设服务器","请稍后...",true);
+        dialog.show();
         mPC=((MainActivity)this.getActivity()).getProtocolController();
-        mPC.startApaAndServer("Billy","12345678",5000,8081);
+        mPC.startApaAndServer("Billy","12345678",5000,8081,new IStartWifiCallBack() {
+            @Override
+            public void execute() {
+                dialog.dismiss();
+            }
+        },new IStartWifiCallBack() {
+            @Override
+            public void execute() {
+                dialog.dismiss();
+            }
+        });
     }
 
 

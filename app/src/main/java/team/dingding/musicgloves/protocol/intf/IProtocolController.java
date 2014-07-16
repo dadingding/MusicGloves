@@ -8,7 +8,7 @@ import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
  */
 public interface IProtocolController {
     //启动Wifi热点和服务器
-    boolean startApaAndServer(String ssid, String password, int latency, int port);
+    void startApaAndServer(final String ssid, final String password, final int latency, final int port,final IStartWifiCallBack success,final IStartWifiCallBack fail);
 
     //注册事件:如播放声音、调节音量
     boolean registerMusicEvent(String eventName, IProtocolCallBack cb);

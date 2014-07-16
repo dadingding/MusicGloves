@@ -76,7 +76,7 @@ public class MainActivity extends Activity
 
     private IProtocolController mPC;
     private ClientManager mCM;
-    private StateFragment mSF;
+    private FuncFragment mFF;
 
     private final Handler msgHandler = new Handler(){
         public void handleMessage(Message msg) {
@@ -86,7 +86,8 @@ public class MainActivity extends Activity
 
     private final Handler updateHandler= new Handler(){
         public void handleMessage(Message msg) {
-            mSF.updateText();
+            if (mFF!=null)
+                mFF.updateText();
         }
     };
 
@@ -178,22 +179,25 @@ public class MainActivity extends Activity
         FragmentManager fragmentManager = getFragmentManager();
         switch (position){
             case 0:
+                mFF=(FuncFragment) FuncFragment.newInstance(position + 1);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, FuncFragment.newInstance(position + 1))
+                        .replace(R.id.container, mFF)
                         .commit();
                 break;
+/*
             case 1:
                 mSF=(StateFragment) StateFragment.newInstance(position + 1);
                 fragmentManager.beginTransaction()
                         .replace(R.id.container,mSF )
                         .commit();
                 break;
-            case 2:
+                */
+            case 1:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))
                         .commit();
                 break;
-            case 3:
+            case 2:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, SettingFragment.newInstance(position + 1))
                         .commit();
@@ -211,9 +215,6 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 mTitle=getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
