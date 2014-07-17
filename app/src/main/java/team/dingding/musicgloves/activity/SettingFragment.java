@@ -55,7 +55,8 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 //Log.d("mark", "onItemSelected1() is invoked!");
-                sound.load(arg2);
+                if(getMainActivity().getSource()!=arg2)
+                    sound.load(arg2);
                 getMainActivity().setSource(arg2);
                 arg0.setVisibility(View.VISIBLE);
             }

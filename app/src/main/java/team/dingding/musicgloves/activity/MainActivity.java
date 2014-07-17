@@ -30,6 +30,8 @@ import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
 
+import static android.os.SystemClock.sleep;
+
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -333,7 +335,19 @@ public class MainActivity extends Activity
         }
     }
         public void play(View v){
+          sound.play(1);
+            sleep(3000);
+            sound.play(2);
+            sleep(3000);
+            sound.play(3);
+            sleep(3000);
+            sound.play(4);
+            sleep(3000);
+            sound.play(5);
+            sleep(3000);
             sound.play(6);
+            sleep(3000);
+            sound.play(7);
     }
 
 }

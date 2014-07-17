@@ -3,8 +3,8 @@
     <string-array name="instruments">
         <item>魔幻哲学电子音</item>
         <item>钢琴</item>
+        <item>架子鼓</item>
         <item>吉他</item>
-        <item>口琴</item>
     </string-array>
 
     <string-array name="scales">
@@ -13,4 +13,5 @@
         <item>D大调</item>
         <item>D小调</item>
     </string-array>
+
 </resources>
