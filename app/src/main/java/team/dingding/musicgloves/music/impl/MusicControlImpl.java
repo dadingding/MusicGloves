@@ -5,7 +5,6 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -21,6 +20,7 @@ public class MusicControlImpl implements IPlayMusic {
     SoundPool soundPool2;
     int loadcount=0;
     int currplay[];
+
     boolean loadsign=false;
     AudioManager am;
     Context mContext;
@@ -28,14 +28,13 @@ public class MusicControlImpl implements IPlayMusic {
     //载入音源
     public MusicControlImpl(Context context){
         mContext=context;
-        currplay=new int[8];
+        currplay=new int[9];
         for(int i=0;i<8;i++)
             currplay[i]=0;
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
         soundPool2 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
         soundMap = new HashMap<Integer, Integer>();
         am=(AudioManager) context.getSystemService(context.AUDIO_SERVICE);
-
     }
     public boolean load(int kind){
         loadsign=false;
@@ -46,13 +45,13 @@ public class MusicControlImpl implements IPlayMusic {
 
             case 0:
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
-                soundMap.put(2, soundPool.load(mContext, R.raw.cre, 1));
-                soundMap.put(3, soundPool.load(mContext, R.raw.cmi, 1));
-                soundMap.put(4, soundPool.load(mContext, R.raw.cfa, 1));
-                soundMap.put(5, soundPool2.load(mContext, R.raw.cso, 1));
-                soundMap.put(6, soundPool2.load(mContext, R.raw.cla, 1));
-                soundMap.put(7, soundPool2.load(mContext, R.raw.cxi, 1));
-                soundMap.put(8, soundPool2.load(mContext, R.raw.chdo, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.cfa, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.chdo, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.cla, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.cmi, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.cre, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.cso, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.cxi, 1));
                 break;
             case 1:
                 soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_25, 1));
@@ -63,6 +62,46 @@ public class MusicControlImpl implements IPlayMusic {
                 soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_30, 1));
                 soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_31, 1));
                 soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_32, 1));
+                break;
+            case 2:
+                soundMap.put(1, soundPool.load(mContext, R.raw.sound_drum_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.sound_drum_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.sound_drum_3, 14));
+                soundMap.put(4, soundPool.load(mContext, R.raw.sound_drum_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.sound_drum_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.sound_drum_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.sound_drum_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.sound_drum_8, 1));
+                break;
+            case 3:
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar0_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar0_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar0_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar0_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar0_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar0_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar0_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar0_8, 1));
+                break;
+            case 4:
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar1_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar1_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar1_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar1_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar1_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar1_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar1_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar1_8, 1));
+                break;
+            case 5:
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar2_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar2_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar2_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar2_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar2_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar2_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar2_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar2_8, 1));
                 break;
         }
 
@@ -91,6 +130,7 @@ public class MusicControlImpl implements IPlayMusic {
     }
     //播放某个音乐
     public void play(int music){
+        stopAll();
         if(music<=4)
             currplay[music-1]=soundPool.play(soundMap.get(music),1,1,0,0,1);
         else
