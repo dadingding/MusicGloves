@@ -131,12 +131,52 @@ public class MainActivity extends Activity
             public void execute(Long cid, String argument) {
                 int res=Integer.valueOf(argument);
                 sound.play(res);
-                childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
+
             }
         });
+        mPC.registerMusicEvent("stopMusic",new IProtocolCallBack() {
+            @Override
+            public void execute(Long cid, String argument) {
+                int res=Integer.valueOf(argument);
+                sound.stop(res);
 
-
+            }
+        });
         sound=new MusicControlImpl(this);
+        mPC.registerMusicEvent("switchInstrument",new IProtocolCallBack() {
+            @Override
+            public void execute(Long cid, String argument) {
+                int res=Integer.valueOf(argument);
+                switch (res){
+                    case 1:
+                        sound.load("Magic",0);
+                        break;
+                    case 2:
+                        sound.load("Piano",0);
+                        break;
+                    case 3:
+                        sound.load("Piano",1);
+                        break;
+                    case 4:
+                        sound.load("Piano",2);
+                        break;
+                    case 5:
+                        sound.load("Drum",0);
+                        break;
+                    case 6:
+                        sound.load("Guitar",0);
+                        break;
+                    case 7:
+                        sound.load("Guitar",1);
+                        break;
+                    case 8:
+                        sound.load("Guitar",2);
+                        break;
+                }
+
+            }
+        });
+       // sound=new MusicControlImpl(this);
         mCM=new ClientManager();
 
         sp =getSharedPreferences("setting",MODE_WORLD_READABLE|MODE_WORLD_WRITEABLE);
