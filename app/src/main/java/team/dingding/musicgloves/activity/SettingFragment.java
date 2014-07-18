@@ -1,7 +1,6 @@
 package team.dingding.musicgloves.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +54,24 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 //Log.d("mark", "onItemSelected1() is invoked!");
-                if(getMainActivity().getSource()!=arg2) {
-                    Log.d(String.valueOf(arg2),String.valueOf(arg2));
-                    sound.load(arg2);
+                int source=getMainActivity().getSource();
+                if(source!=arg2) {
+                    String name=null;
+                    switch (arg2){
+                        case 0:
+                            name="Magic";
+                            break;
+                        case 1:
+                            name="Piano";
+                            break;
+                        case 2:
+                            name="Drum";
+                            break;
+                        case 3:
+                            name="Guitar";
+                            break;
+                    }
+                    sound.load(name,getMainActivity().getScale());
                 }
                 getMainActivity().setSource(arg2);
                 arg0.setVisibility(View.VISIBLE);
@@ -79,6 +93,25 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 getMainActivity().setScale(arg2);
+                int source=getMainActivity().getSource();
+
+                    String name=null;
+                    switch (source){
+                        case 0:
+                            name="Magic";
+                            break;
+                        case 1:
+                            name="Piano";
+                            break;
+                        case 2:
+                            name="Drum";
+                            break;
+                        case 3:
+                            name="Guitar";
+                            break;
+                    }
+                    sound.load(name,arg2);
+
                 arg0.setVisibility(View.VISIBLE);
             }
 

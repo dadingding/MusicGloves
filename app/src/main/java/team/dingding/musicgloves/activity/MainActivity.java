@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,14 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.Random;
-
 import team.dingding.musicgloves.R;
 import team.dingding.musicgloves.music.impl.MusicControlImpl;
 import team.dingding.musicgloves.music.impl.MusicScore;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
-import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
@@ -153,7 +149,24 @@ public class MainActivity extends Activity
         if (scale == -1) {
             scale=0;
         }
-
+        //加载音乐
+        int source=getSource();
+            String name=null;
+            switch (source){
+                case 0:
+                    name="Magic";
+                    break;
+                case 1:
+                    name="Piano";
+                    break;
+                case 2:
+                    name="Drum";
+                    break;
+                case 3:
+                    name="Guitar";
+                    break;
+            }
+            sound.load(name,getScale());
     }
     @Override
     protected void onDestroy() {

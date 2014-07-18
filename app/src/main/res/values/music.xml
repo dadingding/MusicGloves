@@ -4,16 +4,13 @@
         <item>魔幻哲学电子音</item>
         <item>钢琴</item>
         <item>架子鼓</item>
-        <item>吉他0</item>
-        <item>吉他1</item>
-        <item>吉他2</item>
+        <item>吉他</item>
     </string-array>
 
     <string-array name="scales">
-        <item>C大调</item>
-        <item>C小调</item>
-        <item>D大调</item>
-        <item>D小调</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
 </resources>

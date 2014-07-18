@@ -121,15 +121,5 @@
         <item>sound_piano_72</item>
     </string-array>
 
-    <integer-array name = "MusicName">
-        <item>@raw/sound_piano_25</item>
-        <item>@raw/sound_piano_26</item>
-        <item>@raw/sound_piano_27</item>
-        <item>@raw/sound_piano_28</item>
-        <item>@raw/sound_piano_29</item>
-        <item>@raw/sound_piano_30</item>
-        <item>@raw/sound_piano_31</item>
-        <item>@raw/sound_piano_32</item>
-    </integer-array>
 
 </resources>
