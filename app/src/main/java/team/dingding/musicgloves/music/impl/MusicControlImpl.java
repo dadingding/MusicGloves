@@ -14,6 +14,7 @@ import team.dingding.musicgloves.music.intf.IPlayMusic;
  * Created by guoyanchang on 2014/7/4.
  */
 
+
 public class MusicControlImpl implements IPlayMusic {
     SoundPool soundPool;
     SoundPool soundPool2;
