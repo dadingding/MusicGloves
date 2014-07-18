@@ -1,6 +1,8 @@
 package team.dingding.musicgloves.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.baidu.oauth.BaiduOAuth;
 
 import team.dingding.musicgloves.R;
 import team.dingding.musicgloves.music.impl.MusicControlImpl;
@@ -31,6 +35,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
     private ClientManager mCM;
     private TextView[] textState;
     private ImageView[] ivDevice;
+    private String mbOauth = null;
 
 
 
@@ -132,11 +137,37 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
     public void btnFuncQuitOnClick(View v){
+        /*
         SharedPreferences.Editor editor = getMainActivity().getSp().edit();
         //修改数据
         editor.putInt("Source_Key", getMainActivity().getSource());
         editor.putInt("Scale_Key", getMainActivity().getScale());
         editor.commit();
         System.exit(0);
+        */
+
+
+        BaiduOAuth oauthClient = new BaiduOAuth();
+        final Context context=v.getContext();
+        oauthClient.startOAuth(context, "L6g70tBRRIXLsY0Z3HwKqlRE", new String[]{"basic", "netdisk"}, new BaiduOAuth.OAuthListener() {
+            @Override
+            public void onException(String msg) {
+                Toast.makeText(context, "Login failed " + msg, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onComplete(BaiduOAuth.BaiduOAuthResponse response) {
+                if(null != response){
+                    mbOauth = response.getAccessToken();
+                    Intent i=new Intent("team.dingding.musicgloves.activity.BaiduCloudActivity");
+                    i.putExtra("mbOauth",mbOauth);
+                    startActivity(i);
+                    Toast.makeText(context, "Token: " + mbOauth + "    User name:" + response.getUserName(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancel() {
+                Toast.makeText(context, "Login cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -61,7 +61,11 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Baidu-PCS-SDK-Android-L2-2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.2" level="project" />
+    <orderEntry type="library" exported="" name="Baidu-OAuth-SDK-Android-G-2.0.0" level="project" />
   </component>
 </module>
 

@@ -23,4 +23,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:19.+'
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/httpmime-4.2.jar')
+    compile files('libs/Baidu-PCS-SDK-Android-L2-2.1.0.jar')
+    compile files('libs/Baidu-OAuth-SDK-Android-G-2.0.0.jar')
 }

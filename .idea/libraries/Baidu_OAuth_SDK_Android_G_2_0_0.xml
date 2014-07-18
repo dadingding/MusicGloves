@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Baidu-OAuth-SDK-Android-G-2.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/Baidu-OAuth-SDK-Android-G-2.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -161,6 +162,20 @@ public class MusicScore {
             task.cancel();
     }
 
+    public static String[] listMsFile(File fileRoot){
+
+        File[] files=fileRoot.listFiles();
+        String[] filesname=new String[files.length];
+        Vector<String> result=new Vector<String>();
+        for (int i=0;i<files.length;++i){
+            String name=files[i].getName();
+            if (name.length()>4 && name.substring(name.length()-4).equals(".msc")){
+                result.addElement(name);
+            }
+        }
+
+        return (String[])result.toArray(new String[0]);
+    }
 
 
 }

@@ -79,7 +79,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     }
 
     private void ivMsPlayOnClick(View v){
-        final String[] filesname=listMsFile(v.getContext().getFilesDir());
+        final String[] filesname=MusicScore.listMsFile(v.getContext().getFilesDir());
         new AlertDialog.Builder(v.getContext())
                 .setTitle("请选择")
                 .setIcon(android.R.drawable.ic_dialog_info)
@@ -105,7 +105,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     private void ivMsRemoveOnClick(View v){
         final String rootname=v.getContext().getFilesDir().getAbsolutePath()+"/";
-        final String[] filesname=listMsFile(v.getContext().getFilesDir());
+        final String[] filesname=MusicScore.listMsFile(v.getContext().getFilesDir());
         new AlertDialog.Builder(v.getContext())
                 .setTitle("请选择")
                 .setIcon(android.R.drawable.ic_dialog_info)
@@ -157,19 +157,6 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         MusicScore.fromFile(getActivity().getBaseContext(),fileName).play(getMainActivity().getMusicControl());
     }
 
-    private String[] listMsFile(File fileRoot){
-        File[] files=fileRoot.listFiles();
-        String[] filesname=new String[files.length];
-        Vector<String> result=new Vector<String>();
-        for (int i=0;i<files.length;++i){
-            String name=files[i].getName();
-            if (name.length()>4 && name.substring(name.length()-4).equals(".msc")){
-                result.addElement(name);
-            }
-        }
-
-        return (String[])result.toArray(new String[0]);
-    }
 
 
 

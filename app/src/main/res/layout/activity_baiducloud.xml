@@ -1,10 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
-    tools:context=".MyActivity$PlaceholderFragment"
     android:weightSum="2">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,8 +23,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/pic_lm"
-                android:id="@+id/btnFuncLoadMusic"
+                android:src="@drawable/pic_download"
+                android:id="@+id/btnBaiduDownload"
                 android:clickable="true"
 
                 />
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:text="载入音源"
+                android:text="从云空间下载乐谱"
                 android:textSize="18dip"
                 />
         </FrameLayout>
@@ -45,8 +45,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/pic_wifi"
-                android:id="@+id/btnFuncSetWifi"
+                android:src="@drawable/pic_upload"
+                android:id="@+id/btnBaiduUpload"
                 android:clickable="true"
 
                 />
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:text="建立服务器"
+                android:text="从云空间上传乐谱"
                 android:textSize="18dip"
                 />
         </FrameLayout>
@@ -68,81 +68,28 @@
         android:layout_weight="1"
         >
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             >
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/pic_glove_cnt"
+                android:src="@drawable/pic_removems"
+                android:id="@+id/btnBaiduRemove"
                 android:clickable="true"
-                android:id="@+id/ivStateDevice0"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:text="设备1"
+                android:text="从云空间删除乐谱"
                 android:textSize="18dip"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="已连接"
-                android:textSize="18dip"
-                android:id="@+id/textStateCntState0"
 
                 />
         </FrameLayout>
-
-
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-
-                >
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/pic_glove_dis"
-                    android:clickable="true"
-                    android:id="@+id/ivStateDevice1"
-
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="设备2"
-                    android:textSize="18dip"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="未连接"
-                    android:textSize="18dip"
-                    android:id="@+id/textStateCntState1"
-
-                    />
-
-            </FrameLayout>
-
-
-        </LinearLayout>
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -154,16 +101,15 @@
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/pic_exit"
-                android:id="@+id/btnFuncQuit"
+                android:id="@+id/btnBaiduQuit"
                 android:clickable="true"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:text="退出"
+                android:text="返回"
                 android:textSize="18dip"
-                android:id="@+id/textMsMakeorsave"
 
                 />
         </FrameLayout>
