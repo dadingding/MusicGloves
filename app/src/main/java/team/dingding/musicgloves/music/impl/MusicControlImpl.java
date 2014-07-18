@@ -148,6 +148,8 @@ public class MusicControlImpl implements IPlayMusic {
         return true;
     }
     //播放某个音乐
+
+
     public void play(int music){
         if(currInstrument.equals("Guitar"))
             stopAll();
