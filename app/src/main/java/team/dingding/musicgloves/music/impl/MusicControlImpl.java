@@ -5,7 +5,6 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -67,7 +66,7 @@ public class MusicControlImpl implements IPlayMusic {
             case 2:
                 soundMap.put(1, soundPool.load(mContext, R.raw.sound_drum_1, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.sound_drum_2, 1));
-                soundMap.put(3, soundPool.load(mContext, R.raw.sound_drum_3, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.sound_drum_3, 14));
                 soundMap.put(4, soundPool.load(mContext, R.raw.sound_drum_4, 1));
                 soundMap.put(5, soundPool2.load(mContext, R.raw.sound_drum_5, 1));
                 soundMap.put(6, soundPool2.load(mContext, R.raw.sound_drum_6, 1));
@@ -83,6 +82,7 @@ public class MusicControlImpl implements IPlayMusic {
                 soundMap.put(6, soundPool2.load(mContext, R.raw.guitar0_6, 1));
                 soundMap.put(7, soundPool2.load(mContext, R.raw.guitar0_7, 1));
                 soundMap.put(8, soundPool2.load(mContext, R.raw.guitar0_8, 1));
+                break;
             case 4:
                 soundMap.put(1, soundPool.load(mContext, R.raw.guitar1_1, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.guitar1_2, 1));
@@ -92,6 +92,7 @@ public class MusicControlImpl implements IPlayMusic {
                 soundMap.put(6, soundPool2.load(mContext, R.raw.guitar1_6, 1));
                 soundMap.put(7, soundPool2.load(mContext, R.raw.guitar1_7, 1));
                 soundMap.put(8, soundPool2.load(mContext, R.raw.guitar1_8, 1));
+                break;
             case 5:
                 soundMap.put(1, soundPool.load(mContext, R.raw.guitar2_1, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.guitar2_2, 1));
@@ -101,6 +102,7 @@ public class MusicControlImpl implements IPlayMusic {
                 soundMap.put(6, soundPool2.load(mContext, R.raw.guitar2_6, 1));
                 soundMap.put(7, soundPool2.load(mContext, R.raw.guitar2_7, 1));
                 soundMap.put(8, soundPool2.load(mContext, R.raw.guitar2_8, 1));
+                break;
         }
 
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){

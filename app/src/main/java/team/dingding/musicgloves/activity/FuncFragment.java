@@ -7,17 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicControlImpl;
 import team.dingding.musicgloves.music.intf.IPlayMusic;
 import team.dingding.musicgloves.network.imp.ClientManager;
-import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
 import team.dingding.musicgloves.protocol.intf.IStartWifiCallBack;
 
@@ -99,8 +95,9 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
     public void btnFuncLoadMusicOnClick(View v){
         sound=getMainActivity().getMusicControl();
+
         if (sound!=null) {
-            if (sound.load(1)) {
+            if (sound.load(getMainActivity().getSource())) {
                 Toast.makeText(this.getActivity().getApplicationContext(),
                         "音乐载入成功", Toast.LENGTH_SHORT).show();
             } else {
