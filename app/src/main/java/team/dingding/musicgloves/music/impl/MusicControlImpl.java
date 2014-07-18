@@ -1,6 +1,5 @@
 package team.dingding.musicgloves.music.impl;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -40,9 +39,7 @@ public class MusicControlImpl implements IPlayMusic {
         loadsign=false;
         loadcount=0;
         currInstrument=name;
-        final ProgressDialog dialog=ProgressDialog.show(mContext,
-                "loading music","wait...",true);
-
+        
             if(name.equals("Magic")) {
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.cfa, 1));
@@ -131,7 +128,7 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     loadsign=true;
                     }
             }
@@ -141,7 +138,7 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     loadsign=true;
                 }
             }
@@ -151,8 +148,7 @@ public class MusicControlImpl implements IPlayMusic {
     }
     //播放某个音乐
     public void play(int music){
-        if(currInstrument.equals("Guitar"))
-            stopAll();
+        stopAll();
         if(music<=4)
             currplay[music-1]=soundPool.play(soundMap.get(music),1,1,0,0,1);
         else

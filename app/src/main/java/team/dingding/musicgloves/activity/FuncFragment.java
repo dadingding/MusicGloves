@@ -130,7 +130,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
                 "正在开启Wifi热点并架设服务器","请稍后...",true);
         dialog.show();
         mPC=((MainActivity)this.getActivity()).getProtocolController();
-        mPC.startApaAndServer("Billy","12345678",5000,8081,new IStartWifiCallBack() {
+        mPC.startApaAndServer("Bilguoly","12345678",5000,8081,new IStartWifiCallBack() {
             @Override
             public void execute() {
                 dialog.dismiss();

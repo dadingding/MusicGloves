@@ -38,9 +38,15 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        ms=getMainActivity().getMusicScore();
         View rootView = inflater.inflate(R.layout.fragment_musicscore, container, false);
         tv=(TextView)rootView.findViewById(R.id.textMsMakeorsave);
-
+        if (getMainActivity().getMusicScore()==null){
+            tv.setText("制作乐谱");
+        }
+        else{
+            tv.setText("保存乐谱");
+        }
         ((ImageView)rootView.findViewById(R.id.ivMsPlay)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +134,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     private void ivMsMakeOnClick(View v) {
         if (tv.getText().toString().equals("制作乐谱")) {
             ms = new MusicScore("钢琴", "D大调");
+            getMainActivity().setMusicScore(ms);
             tv.setText("保存乐谱");
         } else {
             et = new EditText(v.getContext());
@@ -150,7 +157,8 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                                 Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
                             }
                             tv.setText("制作乐谱");
-
+                            ms=null;
+                            getMainActivity().setMusicScore(null);
                         }
                     })
                     .setNegativeButton("取消", null)
@@ -162,6 +170,13 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         MusicScore.fromFile(getActivity().getBaseContext(),fileName).play(getMainActivity().getMusicControl());
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (ms!=null){
+            ms.stop();
+        }
+    }
 
 
 
