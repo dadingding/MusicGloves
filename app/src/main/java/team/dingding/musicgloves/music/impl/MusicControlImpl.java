@@ -20,7 +20,7 @@ public class MusicControlImpl implements IPlayMusic {
     SoundPool soundPool2;
     int loadcount=0;
     int currplay[];
-
+    String currInstrument=null;
     boolean loadsign=false;
     AudioManager am;
     Context mContext;
@@ -39,6 +39,7 @@ public class MusicControlImpl implements IPlayMusic {
     public boolean load(String name, int scale){
         loadsign=false;
         loadcount=0;
+        currInstrument=name;
         final ProgressDialog dialog=ProgressDialog.show(mContext,
                 "loading music","wait...",true);
 
@@ -150,7 +151,8 @@ public class MusicControlImpl implements IPlayMusic {
     }
     //播放某个音乐
     public void play(int music){
-        stopAll();
+        if(currInstrument.equals("Guitar"))
+            stopAll();
         if(music<=4)
             currplay[music-1]=soundPool.play(soundMap.get(music),1,1,0,0,1);
         else
