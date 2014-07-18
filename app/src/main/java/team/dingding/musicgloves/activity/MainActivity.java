@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,14 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.Random;
-
 import team.dingding.musicgloves.R;
 import team.dingding.musicgloves.music.impl.MusicControlImpl;
 import team.dingding.musicgloves.music.impl.MusicScore;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
-import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
@@ -149,7 +145,10 @@ public class MainActivity extends Activity
             @Override
             public void execute(Long cid, String argument) {
                 int res=Integer.valueOf(argument);
-                sound.stopAll();
+                if(getSource()==1){
+                    sound.stopAll();
+                }
+
 
             }
         });
@@ -160,28 +159,44 @@ public class MainActivity extends Activity
                 int res=Integer.valueOf(argument);
                 switch (res){
                     case 1:
+                        setSource(0);
+                        setScale(0);
                         sound.load("Magic",0);
                         Log.v("233","2333");
                         break;
                     case 2:
+                        setSource(1);
+                        setScale(0);
                         sound.load("Piano",0);
                         break;
                     case 3:
+                        setSource(1);
+                        setScale(1);
                         sound.load("Piano",1);
                         break;
                     case 4:
+                        setSource(1);
+                        setScale(2);
                         sound.load("Piano",2);
                         break;
                     case 5:
+                        setSource(2);
+                        setScale(0);
                         sound.load("Drum",0);
                         break;
                     case 6:
+                        setSource(3);
+                        setScale(0);
                         sound.load("Guitar",0);
                         break;
                     case 7:
+                        setSource(3);
+                        setScale(1);
                         sound.load("Guitar",1);
                         break;
                     case 8:
+                        setSource(3);
+                        setScale(2);
                         sound.load("Guitar",2);
                         break;
 

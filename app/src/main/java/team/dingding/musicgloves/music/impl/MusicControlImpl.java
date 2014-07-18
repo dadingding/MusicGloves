@@ -44,6 +44,7 @@ public class MusicControlImpl implements IPlayMusic {
         currscale=scale;
         
             if(name.equals("Magic")) {
+
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
                 soundMap.put(2, soundPool.load(mContext, R.raw.cfa, 1));
                 soundMap.put(3, soundPool.load(mContext, R.raw.chdo, 1));
