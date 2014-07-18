@@ -43,8 +43,8 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
         View rootView = inflater.inflate(R.layout.fragment_func, container, false);
 
 
-        ((ImageView)rootView.findViewById(R.id.btnFuncLoadMusic)).setOnClickListener(new View.OnClickListener(){
-            @Override public void onClick(View v){btnFuncLoadMusicOnClick(v);}
+        ((ImageView)rootView.findViewById(R.id.btnFuncCloud)).setOnClickListener(new View.OnClickListener(){
+            @Override public void onClick(View v){btnFuncCloudOnClick(v);}
         });
 
 
@@ -98,18 +98,29 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
 
-    public void btnFuncLoadMusicOnClick(View v){
-        sound=getMainActivity().getMusicControl();
-
-        if (sound!=null) {
-            if (sound.load(getMainActivity().getSource())) {
-                Toast.makeText(this.getActivity().getApplicationContext(),
-                        "音乐载入成功", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this.getActivity().getApplicationContext(),
-                        "音乐载入失败", Toast.LENGTH_SHORT).show();
+    public void btnFuncCloudOnClick(View v){
+        BaiduOAuth oauthClient = new BaiduOAuth();
+        final Context context=v.getContext();
+        oauthClient.startOAuth(context, "L6g70tBRRIXLsY0Z3HwKqlRE", new String[]{"basic", "netdisk"}, new BaiduOAuth.OAuthListener() {
+            @Override
+            public void onException(String msg) {
+                Toast.makeText(context, "Login failed " + msg, Toast.LENGTH_SHORT).show();
             }
-        }
+            @Override
+            public void onComplete(BaiduOAuth.BaiduOAuthResponse response) {
+                if(null != response){
+                    mbOauth = response.getAccessToken();
+                    Intent i=new Intent("team.dingding.musicgloves.activity.BaiduCloudActivity");
+                    i.putExtra("mbOauth",mbOauth);
+                    startActivity(i);
+                    Toast.makeText(context, "Token: " + mbOauth + "    User name:" + response.getUserName(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancel() {
+                Toast.makeText(context, "Login cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -134,37 +145,16 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
     public void btnFuncQuitOnClick(View v){
-        /*
+
         SharedPreferences.Editor editor = getMainActivity().getSp().edit();
         //修改数据
         editor.putInt("Source_Key", getMainActivity().getSource());
         editor.putInt("Scale_Key", getMainActivity().getScale());
         editor.commit();
         System.exit(0);
-        */
 
 
-        BaiduOAuth oauthClient = new BaiduOAuth();
-        final Context context=v.getContext();
-        oauthClient.startOAuth(context, "L6g70tBRRIXLsY0Z3HwKqlRE", new String[]{"basic", "netdisk"}, new BaiduOAuth.OAuthListener() {
-            @Override
-            public void onException(String msg) {
-                Toast.makeText(context, "Login failed " + msg, Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onComplete(BaiduOAuth.BaiduOAuthResponse response) {
-                if(null != response){
-                    mbOauth = response.getAccessToken();
-                    Intent i=new Intent("team.dingding.musicgloves.activity.BaiduCloudActivity");
-                    i.putExtra("mbOauth",mbOauth);
-                    startActivity(i);
-                    Toast.makeText(context, "Token: " + mbOauth + "    User name:" + response.getUserName(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancel() {
-                Toast.makeText(context, "Login cancelled", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
     }
 }

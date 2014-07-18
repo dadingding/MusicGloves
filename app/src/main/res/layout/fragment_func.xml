@@ -23,8 +23,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/pic_lm"
-                android:id="@+id/btnFuncLoadMusic"
+                android:src="@drawable/pic_cloud"
+                android:id="@+id/btnFuncCloud"
                 android:clickable="true"
 
                 />
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:text="载入音源"
+                android:text="进入云存储"
                 android:textSize="18dip"
                 />
         </FrameLayout>

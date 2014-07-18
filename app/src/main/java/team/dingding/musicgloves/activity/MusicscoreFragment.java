@@ -94,7 +94,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                 )
                 .setNegativeButton("取消", null)
                 .show();
-
+        Toast.makeText(v.getContext(), "开始播放", Toast.LENGTH_SHORT).show();
     }
 
     private void ivMsChooseOnClick(View v){
@@ -104,6 +104,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     }
 
     private void ivMsRemoveOnClick(View v){
+        final Context context=v.getContext();
         final String rootname=v.getContext().getFilesDir().getAbsolutePath()+"/";
         final String[] filesname=MusicScore.listMsFile(v.getContext().getFilesDir());
         new AlertDialog.Builder(v.getContext())
@@ -115,11 +116,13 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                                 dialog.dismiss();
                                 File f=new File( rootname + filesname[which]);
                                 f.delete();
+                                Toast.makeText(context, "成功删除", Toast.LENGTH_SHORT).show();
                             }
                         }
                 )
                 .setNegativeButton("取消", null)
                 .show();
+
     }
 
     private void ivMsMakeOnClick(View v) {
@@ -139,8 +142,10 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                             if (ms != null) {
                                 if (ms.save(et.getContext(), et.getText().toString() + ".msc") == false) {
                                     Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
-                                }
+                                } else {
+                                    Toast.makeText(et.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
 
+                                }
                             } else {
                                 Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
                             }
