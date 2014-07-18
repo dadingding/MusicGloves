@@ -29,8 +29,8 @@ public class MusicControlImpl implements IPlayMusic {
     //载入音源
     public MusicControlImpl(Context context){
         mContext=context;
-        currplay=new int[9];
-        for(int i=0;i<8;i++)
+        currplay=new int[10];
+        for(int i=0;i<10;i++)
             currplay[i]=0;
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
         soundPool2 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
@@ -60,30 +60,37 @@ public class MusicControlImpl implements IPlayMusic {
                     soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_02, 1));
                     soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_03, 1));
                     soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_04, 1));
-                    soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_05, 1));
+                    soundMap.put(5, soundPool.load(mContext, R.raw.sound_piano_05, 1));
                     soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_06, 1));
                     soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_07, 1));
                     soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_08, 1));
+                    soundMap.put(9, soundPool2.load(mContext, R.raw.sound_piano_09, 1));
+                    soundMap.put(10, soundPool2.load(mContext, R.raw.sound_piano_010, 1));
                 }
                 else if(scale==1) {
                     soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_11, 1));
                     soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_12, 1));
                     soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_13, 1));
                     soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_14, 1));
-                    soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_15, 1));
+                    soundMap.put(5, soundPool.load(mContext, R.raw.sound_piano_15, 1));
                     soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_16, 1));
                     soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_17, 1));
                     soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_18, 1));
+                    soundMap.put(9, soundPool2.load(mContext, R.raw.sound_piano_19, 1));
+                    soundMap.put(10, soundPool2.load(mContext, R.raw.sound_piano_110, 1));
+
                 }
                 if(scale==2) {
                     soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_21, 1));
                     soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_22, 1));
                     soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_23, 1));
                     soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_24, 1));
-                    soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_25, 1));
+                    soundMap.put(5, soundPool.load(mContext, R.raw.sound_piano_25, 1));
                     soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_26, 1));
                     soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_27, 1));
                     soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_28, 1));
+                    soundMap.put(9, soundPool2.load(mContext, R.raw.sound_piano_29, 1));
+                    soundMap.put(10, soundPool2.load(mContext, R.raw.sound_piano_210, 1));
                 }
             }
             else if(name.equals("Drum")) {
@@ -156,22 +163,40 @@ public class MusicControlImpl implements IPlayMusic {
     public void play(int music){
         if(currInstrument.equals("Guitar"))
             stopAll();
-        if(music<=4)
-            currplay[music-1]=soundPool.play(soundMap.get(music),1,1,0,0,1);
+        if(currInstrument.equals("Piano"))
+        {
+            if (music <= 5)
+                currplay[music - 1] = soundPool.play(soundMap.get(music), 1, 1, 0, 0, 1);
+            else
+                currplay[music - 1] = soundPool2.play(soundMap.get(music), 1, 1, 0, 0, 1);
+        }
         else
-            currplay[music-1]=soundPool2.play(soundMap.get(music),1,1,0,0,1);
+        {
+            if (music <= 4)
+                currplay[music - 1] = soundPool.play(soundMap.get(music), 1, 1, 0, 0, 1);
+            else if (music <= 8)
+                currplay[music - 1] = soundPool2.play(soundMap.get(music), 1, 1, 0, 0, 1);
+        }
     }
     //停止播放某个音乐
     public void stop(int music){
-        if(music<=4)
-            soundPool.stop(currplay[music-1]);
-        else
-            soundPool2.stop(currplay[music-1]);
+        if(currInstrument.equals("Piano")){
+            if(music<=5)
+                soundPool.stop(currplay[music-1]);
+            else
+                soundPool2.stop(currplay[music-1]);
+        }
+        else {
+            if (music <= 4)
+                soundPool.stop(currplay[music - 1]);
+            else
+                soundPool2.stop(currplay[music - 1]);
+        }
     }
     //停止播放所有音乐
     public void stopAll(){
     //本来打算清理掉所有声音资源，但是考虑到声音并不多，直接一个一个关闭就行了
-        for(int i=1;i<=8;i++)
+        for(int i=1;i<=10;i++)
             stop(i);
     }
     //设置音量

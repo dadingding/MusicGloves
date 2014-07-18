@@ -422,6 +422,12 @@ public class MainActivity extends Activity
             sound.play(6);
             sleep(3000);
             sound.play(7);
+            sleep(3000);
+            sound.play(8);
+            sleep(3000);
+            sound.play(9);
+            sleep(3000);
+            sound.play(10);
     }
 
 }
