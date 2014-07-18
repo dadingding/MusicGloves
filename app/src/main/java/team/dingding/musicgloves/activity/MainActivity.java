@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Random;
+
 import team.dingding.musicgloves.R;
 import team.dingding.musicgloves.music.impl.MusicControlImpl;
 import team.dingding.musicgloves.music.impl.MusicScore;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
+import team.dingding.musicgloves.network.intf.IWifiAp;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
 import team.dingding.musicgloves.protocol.intf.IProtocolCallBack;
 import team.dingding.musicgloves.protocol.intf.IProtocolController;
@@ -37,7 +41,7 @@ public class MainActivity extends Activity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private MusicControlImpl sound;
-    private MusicScore ms;
+    private MusicScore mMS;
 
     public SharedPreferences getSp() {
         return sp;
@@ -50,6 +54,7 @@ public class MainActivity extends Activity
 
     int source=1;
     int scale=1;
+    int nowfragment=-1;
     public int getSource() {
         return source;
     }
@@ -66,7 +71,9 @@ public class MainActivity extends Activity
         this.scale = scale;
     }
 
+    public MusicScore getMusicScore(){return mMS;}
 
+    public void setMusicScore(MusicScore value){mMS=value;}
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -84,7 +91,7 @@ public class MainActivity extends Activity
 
     private final Handler updateHandler= new Handler(){
         public void handleMessage(Message msg) {
-            if (mFF!=null)
+            if (mFF!=null && nowfragment==0)
                 mFF.updateText();
         }
     };
@@ -131,14 +138,18 @@ public class MainActivity extends Activity
             public void execute(Long cid, String argument) {
                 int res=Integer.valueOf(argument);
                 sound.play(res);
-
+//                Log.v("play","play");
+                if (mMS!=null){
+                    mMS.append(res);
+                }
+                //childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
             }
         });
         mPC.registerMusicEvent("stopMusic",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
                 int res=Integer.valueOf(argument);
-                sound.stop(res);
+                sound.stopAll();
 
             }
         });
@@ -150,6 +161,7 @@ public class MainActivity extends Activity
                 switch (res){
                     case 1:
                         sound.load("Magic",0);
+                        Log.v("233","2333");
                         break;
                     case 2:
                         sound.load("Piano",0);
@@ -172,6 +184,7 @@ public class MainActivity extends Activity
                     case 8:
                         sound.load("Guitar",2);
                         break;
+
                 }
 
             }
@@ -230,6 +243,7 @@ public class MainActivity extends Activity
     }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        nowfragment=position;
         // update the activity_baiducloud content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         switch (position){
@@ -239,14 +253,6 @@ public class MainActivity extends Activity
                         .replace(R.id.container, mFF)
                         .commit();
                 break;
-/*
-            case 1:
-                mSF=(StateFragment) StateFragment.newInstance(position + 1);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container,mSF )
-                        .commit();
-                break;
-                */
             case 1:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))

@@ -183,12 +183,19 @@ public class WifiProtocolController implements IProtocolController {
             return null;
     }
 
-    private void postMessage(Long cid,Message message){
+    private void postMessage(final Long cid,final Message message){
         Log.v("233","sn "+message.serialNumber+"inst "+message.instruction+"arg "+message.argument);
         String opr= mInstrMap.get(message.instruction);
-        IProtocolCallBack cb=mEventMap.get(opr);
+        final IProtocolCallBack cb=mEventMap.get(opr);
         if (cb!=null){
-            cb.execute(cid,message.argument);
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    cb.execute(cid,message.argument);
+
+                }
+            });
+            thread.start();
         }
     }
 

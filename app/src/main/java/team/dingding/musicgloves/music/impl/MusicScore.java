@@ -143,7 +143,7 @@ public class MusicScore {
         task=new TimerTask() {
             @Override
             public void run() {
-                nowTime+=100;
+                nowTime+=50;
                 while(nowPos<note.size() && note.get(nowPos).time<nowTime){
                     pm.play(note.get(nowPos).note);
                     nowPos++;
@@ -162,6 +162,16 @@ public class MusicScore {
             task.cancel();
     }
 
+    public void playnext(final IPlayMusic pm){
+        pm.play(note.get(nowPos).note);
+        nowPos++;
+    }
+
+
+    public void refresh(){
+        stop();
+    }
+
     public static String[] listMsFile(File fileRoot){
 
         File[] files=fileRoot.listFiles();
@@ -176,6 +186,7 @@ public class MusicScore {
 
         return (String[])result.toArray(new String[0]);
     }
+
 
 
 }

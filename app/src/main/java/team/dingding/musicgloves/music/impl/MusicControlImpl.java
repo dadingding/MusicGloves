@@ -39,8 +39,7 @@ public class MusicControlImpl implements IPlayMusic {
     public boolean load(String name, int scale){
         loadsign=false;
         loadcount=0;
-        final ProgressDialog dialog=ProgressDialog.show(mContext,
-                "loading music","wait...",true);
+//        final ProgressDialog dialog=ProgressDialog.show(mContext,"loading music","wait...",true);
 
             if(name.equals("Magic")) {
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
@@ -130,7 +129,7 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     loadsign=true;
                     }
             }
@@ -140,7 +139,7 @@ public class MusicControlImpl implements IPlayMusic {
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
                 if (loadcount == 8) {
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     loadsign=true;
                 }
             }
