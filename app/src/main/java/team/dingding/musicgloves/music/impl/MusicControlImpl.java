@@ -149,7 +149,8 @@ public class MusicControlImpl implements IPlayMusic {
     }
     //播放某个音乐
     public void play(int music){
-        stopAll();
+        if(currInstrument.equals("Guitar"))
+            stopAll();
         if(music<=4)
             currplay[music-1]=soundPool.play(soundMap.get(music),1,1,0,0,1);
         else
