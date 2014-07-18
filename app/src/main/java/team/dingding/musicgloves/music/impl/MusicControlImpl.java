@@ -21,6 +21,7 @@ public class MusicControlImpl implements IPlayMusic {
     int loadcount=0;
     int currplay[];
     String currInstrument=null;
+    int currscale;
     boolean loadsign=false;
     AudioManager am;
     Context mContext;
@@ -40,6 +41,7 @@ public class MusicControlImpl implements IPlayMusic {
         loadsign=false;
         loadcount=0;
         currInstrument=name;
+        currscale=scale;
         
             if(name.equals("Magic")) {
                 soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
@@ -189,6 +191,12 @@ public class MusicControlImpl implements IPlayMusic {
         seek.setProgress(mVolume); //设置seekbar为当前音量进度
 
     }
+    public String getInstrument(){
+        return currInstrument;
+    }
+     public int getScale(){
+         return currscale;
+     }
 
 
 }

@@ -20,4 +20,8 @@ public interface IPlayMusic {
     public int getVolume();
     //把音乐音量调节和Seekbar联系起来
     public void volumeMatch(SeekBar seek);
+
+    public String getInstrument();
+
+    public  int getScale();
 }
