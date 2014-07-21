@@ -32,14 +32,14 @@ public class MusicScore {
     private StopWatch sp=new StopWatch();
 
     private Vector<Note> note;
-    private String mScale;
+    private int mScale;
     private String mInstrument;
     private boolean run=false;
     private long nowTime=0;
     private int nowPos=0;
     private TimerTask task=null;
 
-    public MusicScore(String instrument,String scale){
+    public MusicScore(String instrument,int scale){
         mScale=scale;
         mInstrument=instrument;
         note=new Vector<Note>();
@@ -52,12 +52,12 @@ public class MusicScore {
     public void end(){
         sp.stop();
     }
-    public void append(int sound){
+    public void append(int sound,int press){
         if (!run){
             sp.start();
             run=true;
         }
-        note.addElement(new Note(sp.getTime(),sound));
+        note.addElement(new Note(sp.getTime(),sound,press));
     }
     public Boolean save(Context context,String filename){
         String buf="";
@@ -92,7 +92,7 @@ public class MusicScore {
             if (line.length<=2) return null;
             else{
                 String instrument=line[0];
-                String scale=line[1];
+                int scale=Integer.valueOf(line[1]);
                 MusicScore result=new MusicScore(instrument,scale);
                 for (int i=2;i<line.length;++i){
                     Note t= new Note(line[i]);
@@ -138,23 +138,30 @@ public class MusicScore {
     }
 
     public void play(final IPlayMusic pm){
+
         nowTime=0;
         nowPos=0;
-        task=new TimerTask() {
-            @Override
-            public void run() {
-                nowTime+=50;
-                while(nowPos<note.size() && note.get(nowPos).time<nowTime){
-                    pm.play(note.get(nowPos).note);
-                    nowPos++;
-                }
-                if (nowPos>=note.size())
-                    this.cancel();
+        pm.load(mInstrument, mScale, new Runnable() {
+                    @Override
+                    public void run() {
+                        task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                nowTime += 50;
+                                while (nowPos < note.size() && note.get(nowPos).time < nowTime) {
+                                    pm.play(note.get(nowPos).note);
+                                    nowPos++;
+                                }
+                                if (nowPos >= note.size())
+                                    this.cancel();
 
-            }
-        };
-        Timer t=new Timer();
-        t.scheduleAtFixedRate(task,50,50);
+                            }
+                        };
+                        Timer t = new Timer();
+                        t.scheduleAtFixedRate(task, 50, 50);
+                    }
+                }
+        );
     }
 
     public void stop(){
@@ -163,7 +170,16 @@ public class MusicScore {
     }
 
     public void playnext(final IPlayMusic pm){
-        pm.play(note.get(nowPos).note);
+        if (nowPos==0){
+            pm.load(mInstrument, mScale,new Runnable() {
+                @Override
+                public void run() {
+                    pm.play(note.get(nowPos).note);
+                }
+            });
+        }
+        else
+            pm.play(note.get(nowPos).note);
         nowPos++;
     }
 

@@ -37,6 +37,8 @@ public class MusicControlImpl implements IPlayMusic {
         soundMap = new HashMap<Integer, Integer>();
         am=(AudioManager) context.getSystemService(context.AUDIO_SERVICE);
     }
+
+
     public boolean load(String name, int scale){
         loadsign=false;
         loadcount=0;
@@ -158,6 +160,125 @@ public class MusicControlImpl implements IPlayMusic {
         return true;
     }
     //播放某个音乐
+
+
+
+    public boolean load(String name, int scale,final Runnable after){
+        loadsign=false;
+        loadcount=0;
+        currInstrument=name;
+        currscale=scale;
+
+        if(name.equals("Magic")) {
+            soundMap.put(1, soundPool.load(mContext, R.raw.cdoo, 1));
+            soundMap.put(2, soundPool.load(mContext, R.raw.cfa, 1));
+            soundMap.put(3, soundPool.load(mContext, R.raw.chdo, 1));
+            soundMap.put(4, soundPool.load(mContext, R.raw.cla, 1));
+            soundMap.put(5, soundPool2.load(mContext, R.raw.cmi, 1));
+            soundMap.put(6, soundPool2.load(mContext, R.raw.cre, 1));
+            soundMap.put(7, soundPool2.load(mContext, R.raw.cso, 1));
+            soundMap.put(8, soundPool2.load(mContext, R.raw.cxi, 1));
+        }
+        else if(name.equals("Piano")) {
+            if(scale==0) {
+                soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_01, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_02, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_03, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_04, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_05, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_06, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_07, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_08, 1));
+            }
+            else if(scale==1) {
+                soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_11, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_12, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_13, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_14, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_15, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_16, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_17, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_18, 1));
+            }
+            if(scale==2) {
+                soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_21, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_22, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_23, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_24, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.sound_piano_25, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_26, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_27, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_28, 1));
+            }
+        }
+        else if(name.equals("Drum")) {
+            soundMap.put(1, soundPool.load(mContext, R.raw.sound_drum_1, 1));
+            soundMap.put(2, soundPool.load(mContext, R.raw.sound_drum_2, 1));
+            soundMap.put(3, soundPool.load(mContext, R.raw.sound_drum_3, 14));
+            soundMap.put(4, soundPool.load(mContext, R.raw.sound_drum_4, 1));
+            soundMap.put(5, soundPool2.load(mContext, R.raw.sound_drum_5, 1));
+            soundMap.put(6, soundPool2.load(mContext, R.raw.sound_drum_6, 1));
+            soundMap.put(7, soundPool2.load(mContext, R.raw.sound_drum_7, 1));
+            soundMap.put(8, soundPool2.load(mContext, R.raw.sound_drum_8, 1));
+        }
+        else if(name.equals("Guitar")) {
+            if (scale == 0) {
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar0_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar0_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar0_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar0_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar0_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar0_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar0_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar0_8, 1));
+            } else if (scale == 1) {
+
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar1_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar1_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar1_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar1_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar1_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar1_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar1_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar1_8, 1));
+            } else if (scale == 2) {
+                soundMap.put(1, soundPool.load(mContext, R.raw.guitar2_1, 1));
+                soundMap.put(2, soundPool.load(mContext, R.raw.guitar2_2, 1));
+                soundMap.put(3, soundPool.load(mContext, R.raw.guitar2_3, 1));
+                soundMap.put(4, soundPool.load(mContext, R.raw.guitar2_4, 1));
+                soundMap.put(5, soundPool2.load(mContext, R.raw.guitar2_5, 1));
+                soundMap.put(6, soundPool2.load(mContext, R.raw.guitar2_6, 1));
+                soundMap.put(7, soundPool2.load(mContext, R.raw.guitar2_7, 1));
+                soundMap.put(8, soundPool2.load(mContext, R.raw.guitar2_8, 1));
+            }
+        }
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount == 8) {
+                    after.run();
+                    loadsign=true;
+                }
+            }
+        });
+        soundPool2.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount == 8) {
+                    after.run();
+                    loadsign=true;
+                }
+            }
+        });
+
+        return true;
+    }
+
+
+
+
 
 
     public void play(int music){

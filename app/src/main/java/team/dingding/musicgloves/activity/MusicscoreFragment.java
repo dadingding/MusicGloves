@@ -133,7 +133,8 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     private void ivMsMakeOnClick(View v) {
         if (tv.getText().toString().equals("制作乐谱")) {
-            ms = new MusicScore("钢琴", "D大调");
+            IPlayMusic pm=getMainActivity().getMusicControl();
+            ms = new MusicScore(pm.getInstrument(),pm.getScale() );
             getMainActivity().setMusicScore(ms);
             tv.setText("保存乐谱");
         } else {

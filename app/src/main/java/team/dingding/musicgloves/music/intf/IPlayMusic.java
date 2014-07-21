@@ -8,7 +8,9 @@ import android.widget.SeekBar;
 public interface IPlayMusic {
     //载入音源
     public boolean load(String name,int scale);
-    //播放某个音乐
+    public boolean load(String name, int scale,final Runnable after);
+
+        //播放某个音乐
     public void play(int music);
     //停止播放某个音乐
     public void stop(int music);
