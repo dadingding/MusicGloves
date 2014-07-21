@@ -38,6 +38,10 @@ public class MainActivity extends Activity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private MusicControlImpl sound;
     private MusicScore mMS;
+    public MusicScoreState msState=MusicScoreState.Idle;
+
+
+
 
     public SharedPreferences getSp() {
         return sp;
@@ -78,6 +82,9 @@ public class MainActivity extends Activity
     private IProtocolController mPC;
     private ClientManager mCM;
     private FuncFragment mFF;
+    private MusicscoreFragment mMF;
+
+    public boolean supportMode=false;
 
     private final Handler msgHandler = new Handler(){
         public void handleMessage(Message msg) {
@@ -89,6 +96,8 @@ public class MainActivity extends Activity
         public void handleMessage(Message msg) {
             if (mFF!=null && nowfragment==0)
                 mFF.updateText();
+            if (mMF!=null && nowfragment==2)
+                mMF.updateText();
         }
     };
 
@@ -106,6 +115,8 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MusicScore.printAll(this,"vbb.msc");
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -132,13 +143,22 @@ public class MainActivity extends Activity
         mPC.registerMusicEvent("playMusic",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
-                int res=Integer.valueOf(argument);
-                sound.play(res);
-//                Log.v("play","play");
-                if (mMS!=null){
-                    mMS.append(res,1);
+                if (msState!=MusicScoreState.Support) {
+                    int res = Integer.valueOf(argument);
+                    sound.play(res);
+                    if (mMS != null) {
+                        mMS.append(res, 1);
+                    }
+                }else if(mMS!=null){
+                    mMS.playnext(sound);
+                    if (mMS.finished()){
+                       childProcessToast("弹奏结束，切换回普通模式");
+                       updateHandler.sendMessage(new Message());
+                       msState=MusicScoreState.Idle;
+                       mMS=null;
+                    }
+
                 }
-                //childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
             }
         });
         mPC.registerMusicEvent("stopMusic",new IProtocolCallBack() {
@@ -280,8 +300,9 @@ public class MainActivity extends Activity
                         .commit();
                 break;
             case 2:
+                mMF=(MusicscoreFragment) MusicscoreFragment.newInstance(position + 1);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))
+                        .replace(R.id.container, mMF)
                         .commit();
                 break;
             case 3:
@@ -443,5 +464,13 @@ public class MainActivity extends Activity
             sleep(3000);
             sound.play(10);
     }
+
+    public enum MusicScoreState{
+        Play,
+        Make,
+        Support,
+        Idle,
+    }
+
 
 }

@@ -30,23 +30,23 @@ import team.dingding.musicgloves.protocol.intf.IProtocolController;
  */
 public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
-    private MusicScore ms=null;
     private EditText et=null;
     private TextView tv=null;
+    private TextView tvSupportMode =null;
+    private TextView tvPlayMusic =null;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ms=getMainActivity().getMusicScore();
         View rootView = inflater.inflate(R.layout.fragment_musicscore, container, false);
         tv=(TextView)rootView.findViewById(R.id.textMsMakeorsave);
-        if (getMainActivity().getMusicScore()==null){
-            tv.setText("制作乐谱");
-        }
-        else{
-            tv.setText("保存乐谱");
-        }
+        tvSupportMode=(TextView)rootView.findViewById(R.id.textMsChoose);
+        tvPlayMusic=(TextView)rootView.findViewById(R.id.textMsPlay);
+
+
         ((ImageView)rootView.findViewById(R.id.ivMsPlay)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
             }
         });
 
-
+        updateText();
         return rootView;
     }
 
@@ -84,27 +84,85 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         return fragment;
     }
 
-    private void ivMsPlayOnClick(View v){
-        final String[] filesname=MusicScore.listMsFile(v.getContext().getFilesDir());
-        new AlertDialog.Builder(v.getContext())
-                .setTitle("请选择")
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setSingleChoiceItems(filesname, 0,
-                        new DialogInterface.OnClickListener() {
+    private void ivMsPlayOnClick(View v) {
+        if (tvPlayMusic.getText().equals("播放乐谱")) {
+            if (getMainActivity().msState == MainActivity.MusicScoreState.Support) {
+                Toast.makeText(v.getContext(), "请先结束辅助演奏模式", Toast.LENGTH_LONG).show();
+                return;
+            }
+            else if (getMainActivity().msState == MainActivity.MusicScoreState.Make) {
+                Toast.makeText(v.getContext(), "请先结束乐谱制作", Toast.LENGTH_LONG).show();
+                return;
+            }
+            final Context context = v.getContext();
+            final String[] filesname = MusicScore.listMsFile(v.getContext().getFilesDir());
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle("请选择")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setSingleChoiceItems(filesname, 0,
+                            new DialogInterface.OnClickListener() {
 
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                playMusicScore(filesname[which]);
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    playMusicScore(filesname[which]);
+                                    Toast.makeText(context, "开始播放", Toast.LENGTH_SHORT).show();
+                                    tvPlayMusic.setText("停止播放");
+                                }
                             }
-                        }
-                )
-                .setNegativeButton("取消", null)
-                .show();
-        Toast.makeText(v.getContext(), "开始播放", Toast.LENGTH_SHORT).show();
+                    )
+                    .setNegativeButton("取消", null)
+                    .show();
+        }
+        else{
+            getMainActivity().getMusicScore().stop();
+            getMainActivity().setMusicScore(null);
+            getMainActivity().msState= MainActivity.MusicScoreState.Idle;
+            tvPlayMusic.setText("播放乐谱");
+        }
     }
 
     private void ivMsChooseOnClick(View v){
-        Random r=new Random();
+
+
+        if (tvSupportMode.getText().equals("选择辅助模式乐谱")) {
+            if(getMainActivity().msState== MainActivity.MusicScoreState.Play){
+                Toast.makeText(v.getContext(), "请等待当前乐谱播放完成", Toast.LENGTH_LONG).show();
+                return;
+            }
+            else if(getMainActivity().msState== MainActivity.MusicScoreState.Make){
+                Toast.makeText(v.getContext(), "请先结束乐谱制作", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+
+            final Context context = v.getContext();
+            final String[] filesname = MusicScore.listMsFile(v.getContext().getFilesDir());
+            new AlertDialog.Builder(v.getContext())
+                    .setTitle("请选择")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setSingleChoiceItems(filesname, 0,
+                            new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    getMainActivity().msState= MainActivity.MusicScoreState.Support;
+                                    getMainActivity().setMusicScore(MusicScore.fromFile(context, filesname[which]));
+//                                playMusicScore(filesname[which]);
+                                    Toast.makeText(context, "选择成功", Toast.LENGTH_SHORT).show();
+                                    tvSupportMode.setText("停止辅助模式");
+
+                                }
+                            }
+                    )
+                    .setNegativeButton("取消", null)
+                    .show();
+        }
+        else{
+            getMainActivity().msState= MainActivity.MusicScoreState.Idle;
+            getMainActivity().setMusicScore(null);
+            tvSupportMode.setText("选择辅助模式乐谱");
+        }
+//        Random r=new Random();
 //        ms.append(Math.abs(r.nextInt()%8)+1);
 
     }
@@ -132,12 +190,22 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     }
 
     private void ivMsMakeOnClick(View v) {
+
         if (tv.getText().toString().equals("制作乐谱")) {
+            if (getMainActivity().msState== MainActivity.MusicScoreState.Support){
+                Toast.makeText(v.getContext(), "请先结束辅助演奏模式", Toast.LENGTH_LONG).show();
+                return;
+            }
+            else if(getMainActivity().msState== MainActivity.MusicScoreState.Play){
+                Toast.makeText(v.getContext(), "请等待当前乐谱播放完成", Toast.LENGTH_LONG).show();
+                return;
+            }
             IPlayMusic pm=getMainActivity().getMusicControl();
-            ms = new MusicScore(pm.getInstrument(),pm.getScale() );
-            getMainActivity().setMusicScore(ms);
+            getMainActivity().setMusicScore(new MusicScore(pm.getInstrument(),pm.getScale()));
+            getMainActivity().msState= MainActivity.MusicScoreState.Make;
             tv.setText("保存乐谱");
         } else {
+            final MusicScore ms=getMainActivity().getMusicScore();
             et = new EditText(v.getContext());
             et.setSingleLine();
             new AlertDialog.Builder(v.getContext())
@@ -158,8 +226,8 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                                 Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
                             }
                             tv.setText("制作乐谱");
-                            ms=null;
                             getMainActivity().setMusicScore(null);
+                            getMainActivity().msState= MainActivity.MusicScoreState.Idle;
                         }
                     })
                     .setNegativeButton("取消", null)
@@ -168,17 +236,41 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
     }
 
     private void playMusicScore(String fileName){
-        MusicScore.fromFile(getActivity().getBaseContext(),fileName).play(getMainActivity().getMusicControl());
+        getMainActivity().setMusicScore(MusicScore.fromFile(getActivity().getBaseContext(),fileName));
+        getMainActivity().getMusicScore().play(getMainActivity().getMusicControl());
+        getMainActivity().msState= MainActivity.MusicScoreState.Play;
     }
+
+    public void updateText(){
+        tv.setText("制作乐谱");
+        tvPlayMusic.setText("播放乐谱");
+        tvSupportMode.setText("选择辅助模式乐谱");
+        switch (getMainActivity().msState){
+            case Make:
+                tv.setText("保存乐谱");
+                break;
+            case Play:
+                tvPlayMusic.setText("停止演奏");
+                break;
+            case Support:
+                tvSupportMode.setText("停止辅助模式");
+                break;
+        }
+    }
+
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (ms!=null){
+    }
+/*
+        MusicScore ms=getMainActivity().getMusicScore();
+        if (ms!=null && getMainActivity().msState== MainActivity.MusicScoreState.Play ){
             ms.stop();
         }
     }
-
+*/
 
 
 

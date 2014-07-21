@@ -174,30 +174,36 @@ public class MusicScore {
             task.cancel();
     }
 
+    public boolean finished(){
+        if (nowPos< note.size())
+            return false;
+        else
+            return true;
+    }
+
     public void playnext(final IPlayMusic pm){
+
         if (nowPos==0){
             pm.load(mInstrument, mScale,new Runnable() {
                 @Override
                 public void run() {
-                    if (note.get(nowPos).press==1) {
-                        pm.play(note.get(nowPos).note);
+                    while (!finished() &&  (note.get(nowPos).press==0) ) {
+                        nowPos++;
+
                     }
-                    else if(mInstrument.equals("Piano")) {
-                        pm.stop(note.get(nowPos).note);
-                    }
+                    if (finished()) return;
+                    pm.play(note.get(nowPos).note);
+                    nowPos++;
                 }
             });
         }
         else{
-            if (note.get(nowPos).press==1) {
-                pm.play(note.get(nowPos).note);
-            }
-            else if(mInstrument.equals("Piano")) {
-
-                pm.stop(note.get(nowPos).note);
-            }
+            while (!finished() &&  note.get(nowPos).press==0 )
+                nowPos++;
+            if (finished()) return;
+            pm.play(note.get(nowPos).note);
+            nowPos++;
         }
-        nowPos++;
     }
 
 
