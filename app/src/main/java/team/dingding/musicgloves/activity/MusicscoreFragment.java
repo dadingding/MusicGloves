@@ -105,7 +105,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     private void ivMsChooseOnClick(View v){
         Random r=new Random();
-        ms.append(Math.abs(r.nextInt()%8)+1);
+//        ms.append(Math.abs(r.nextInt()%8)+1);
 
     }
 

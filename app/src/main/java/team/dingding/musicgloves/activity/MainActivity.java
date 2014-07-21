@@ -136,7 +136,7 @@ public class MainActivity extends Activity
                 sound.play(res);
 //                Log.v("play","play");
                 if (mMS!=null){
-                    mMS.append(res);
+                    mMS.append(res,1);
                 }
                 //childProcessToast(cid + " 事件"  + "playMusic" +" 参数" + argument);
             }
@@ -148,6 +148,10 @@ public class MainActivity extends Activity
                 if(getSource()==1){
                     sound.stopAll();
                 }
+                if (mMS!=null){
+                    mMS.append(res,0);
+                }
+
 
 
             }
@@ -235,6 +239,8 @@ public class MainActivity extends Activity
                     break;
             }
             sound.load(name,getScale());
+
+
     }
     @Override
     protected void onDestroy() {
@@ -270,10 +276,15 @@ public class MainActivity extends Activity
                 break;
             case 1:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))
+                        .replace(R.id.container, StateFragment.newInstance(position + 1))
                         .commit();
                 break;
             case 2:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, MusicscoreFragment.newInstance(position + 1))
+                        .commit();
+                break;
+            case 3:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, SettingFragment.newInstance(position + 1))
                         .commit();
@@ -291,6 +302,9 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 mTitle=getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle=getString(R.string.title_section4);
                 break;
         }
     }

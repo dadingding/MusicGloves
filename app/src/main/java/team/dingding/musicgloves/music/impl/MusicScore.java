@@ -67,7 +67,7 @@ public class MusicScore {
             FileOutputStream ofs = context.openFileOutput(filename, Context.MODE_PRIVATE);
             for (int i=0;i<note.size();++i){
                 Note t=note.get(i);
-                buf+=t.time+" "+t.note+"\n";
+                buf+=t.time+" "+t.note+" " +t.press+ "\n";
             }
             ofs.write(buf.getBytes());
             ofs.close();
@@ -138,7 +138,6 @@ public class MusicScore {
     }
 
     public void play(final IPlayMusic pm){
-
         nowTime=0;
         nowPos=0;
         pm.load(mInstrument, mScale, new Runnable() {
@@ -149,7 +148,13 @@ public class MusicScore {
                             public void run() {
                                 nowTime += 50;
                                 while (nowPos < note.size() && note.get(nowPos).time < nowTime) {
-                                    pm.play(note.get(nowPos).note);
+                                    //Log.v("233",""+note.get(nowPos).press);
+                                    if (note.get(nowPos).press==1) {
+                                        pm.play(note.get(nowPos).note);
+                                    }
+                                    else if(mInstrument.equals("Piano")) {
+                                        pm.stop(note.get(nowPos).note);
+                                    }
                                     nowPos++;
                                 }
                                 if (nowPos >= note.size())
@@ -174,12 +179,24 @@ public class MusicScore {
             pm.load(mInstrument, mScale,new Runnable() {
                 @Override
                 public void run() {
-                    pm.play(note.get(nowPos).note);
+                    if (note.get(nowPos).press==1) {
+                        pm.play(note.get(nowPos).note);
+                    }
+                    else if(mInstrument.equals("Piano")) {
+                        pm.stop(note.get(nowPos).note);
+                    }
                 }
             });
         }
-        else
-            pm.play(note.get(nowPos).note);
+        else{
+            if (note.get(nowPos).press==1) {
+                pm.play(note.get(nowPos).note);
+            }
+            else if(mInstrument.equals("Piano")) {
+
+                pm.stop(note.get(nowPos).note);
+            }
+        }
         nowPos++;
     }
 
