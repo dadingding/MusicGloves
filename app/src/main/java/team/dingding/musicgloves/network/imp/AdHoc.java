@@ -50,12 +50,14 @@ public class AdHoc implements INetworkTransmission {
     //关闭服务器
     @Override
     public void closeServer() {
-        try {
-            mServerSocket.close();
+        if (mServerSocket != null) {
+            try {
+                mServerSocket.close();
 //            clientMap.clear();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

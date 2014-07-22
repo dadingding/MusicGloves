@@ -111,12 +111,12 @@ public class MainActivity extends Activity
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        MusicScore.printAll(this,"vbb.msc");
+        setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -280,6 +280,8 @@ public class MainActivity extends Activity
         editor.putInt(SourceKey, source);
         editor.putInt(ScaleKey, scale);
         editor.commit();
+        mPC.stopServer();
+        mPC.stopWifi();
         super.onStop();
     }
     @Override

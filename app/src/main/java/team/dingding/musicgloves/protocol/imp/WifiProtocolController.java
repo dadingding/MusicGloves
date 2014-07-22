@@ -76,6 +76,16 @@ public class WifiProtocolController implements IProtocolController {
 
     }
 
+    @Override
+    public void stopServer() {
+        adhoc.closeServer();
+    }
+
+    @Override
+    public void stopWifi() {
+        wifiAp.closeWifiAp(mContext);
+    }
+
 
     //注册事件:如播放声音、调节音量
     @Override
