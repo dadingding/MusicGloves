@@ -150,9 +150,18 @@ public class MusicControlImpl implements IPlayMusic {
             @Override
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
-                if (loadcount == 8) {
-                    if (after!=null) after.run();
-                    loadsign=true;
+                if(currInstrument.equals("Piano"))
+                {
+                    if (loadcount == 10) {
+                        if (after!=null) after.run();
+                        loadsign=true;
+                    }
+                }
+                else {
+                    if (loadcount == 8) {
+                        if (after != null) after.run();
+                        loadsign = true;
+                    }
                 }
             }
         });
@@ -160,9 +169,18 @@ public class MusicControlImpl implements IPlayMusic {
             @Override
             public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
                 loadcount = loadcount + 1;
-                if (loadcount == 8) {
-                    if (after!=null) after.run();
-                    loadsign=true;
+                if(currInstrument.equals("Piano"))
+                {
+                    if (loadcount == 10) {
+                        if (after!=null) after.run();
+                        loadsign=true;
+                    }
+                }
+                else {
+                    if (loadcount == 8) {
+                        if (after != null) after.run();
+                        loadsign = true;
+                    }
                 }
             }
         });
