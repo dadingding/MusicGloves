@@ -136,8 +136,12 @@ public class MusicScore {
             e.printStackTrace();
         }
     }
-
     public void play(final IPlayMusic pm){
+        play(pm,null);
+        }
+
+
+    public void play(final IPlayMusic pm, final Runnable after){
         nowTime=0;
         nowPos=0;
         pm.load(mInstrument, mScale, new Runnable() {
@@ -157,8 +161,10 @@ public class MusicScore {
                                     }
                                     nowPos++;
                                 }
-                                if (nowPos >= note.size())
+                                if (nowPos >= note.size()) {
                                     this.cancel();
+                                    after.run();
+                                }
 
                             }
                         };
@@ -182,7 +188,13 @@ public class MusicScore {
     }
 
     public void playnext(final IPlayMusic pm){
+        while (!finished() &&  note.get(nowPos).press==0 )
+            nowPos++;
+        if (finished()) return;
+        pm.play(note.get(nowPos).note);
+        nowPos++;
 
+/*
         if (nowPos==0){
             pm.load(mInstrument, mScale,new Runnable() {
                 @Override
@@ -204,12 +216,24 @@ public class MusicScore {
             pm.play(note.get(nowPos).note);
             nowPos++;
         }
+        */
     }
 
 
     public void refresh(){
         stop();
     }
+
+    public void changeMusic(final IPlayMusic pm, final Runnable after) {
+        pm.load(mInstrument, mScale, new Runnable() {
+            @Override
+            public void run() {
+                after.run();
+            }
+        });
+
+    }
+
 
     public static String[] listMsFile(File fileRoot){
 
