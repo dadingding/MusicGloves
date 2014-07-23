@@ -24,6 +24,8 @@ import team.dingding.musicgloves.protocol.intf.IStartWifiCallBack;
 /**
  * Created by Elega on 2014/7/8.
  */
+
+//[功能]页面中的内容
 public class FuncFragment extends MainActivity.PlaceholderFragment {
 
     private IProtocolController mPC;
@@ -74,7 +76,6 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
     public void updateText(){
-        Log.v("233", "23333");
         for (int i=0;i<2;++i){
             if (mCM.isConnected(i)) {
                 textState[i].setText("已连接");
@@ -98,6 +99,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
 
 
+    //进入云空间
     public void btnFuncCloudOnClick(View v){
         BaiduOAuth oauthClient = new BaiduOAuth();
         final Context context=v.getContext();
@@ -124,7 +126,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
     }
 
 
-
+    //建立wifi热点
     public void btnFuncSetWifiOnClick(View v){
         final ProgressDialog dialog=ProgressDialog.show(v.getContext(),
                 "正在开启Wifi热点并架设服务器","请稍后...",true);
@@ -144,6 +146,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
     }
 
 
+    //退出程序
     public void btnFuncQuitOnClick(View v){
 
         SharedPreferences.Editor editor = getMainActivity().getSp().edit();

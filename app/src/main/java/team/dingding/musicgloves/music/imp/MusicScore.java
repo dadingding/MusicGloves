@@ -1,33 +1,25 @@
-package team.dingding.musicgloves.music.impl;
+package team.dingding.musicgloves.music.imp;
 
 import android.content.Context;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimerTask;
 import java.util.Vector;
 import java.util.Timer;
 
 
+import team.dingding.musicgloves.music.intf.IMusicScore;
 import team.dingding.musicgloves.music.intf.IPlayMusic;
-import team.dingding.musicgloves.utils.ReschedulableTimerTask;
 import team.dingding.musicgloves.utils.StopWatch;
 
 /**
  * Created by Elega on 2014/7/10.
  */
-public class MusicScore {
-    //构造一个乐谱
-    // Scale:音阶
+public class MusicScore implements team.dingding.musicgloves.music.intf.IMusicScore {
 
     private StopWatch sp=new StopWatch();
 
@@ -39,27 +31,42 @@ public class MusicScore {
     private int nowPos=0;
     private TimerTask task=null;
 
+    //构造一个乐谱
+    // Scale:调值
     public MusicScore(String instrument,int scale){
         mScale=scale;
         mInstrument=instrument;
         note=new Vector<Note>();
     }
 
+    //开始乐谱计时
+    @Override
     public void begin(){
         sp.start();
         run=true;
     }
+
+    //结束乐谱计时
+    @Override
     public void end(){
         sp.stop();
     }
-    public void append(int sound,int press){
+
+    //为乐谱追加音符
+    //sound:音符
+    //press:按下或弹起，按下为1，弹起为0
+    @Override
+    public void append(int sound, int press){
         if (!run){
             sp.start();
             run=true;
         }
         note.addElement(new Note(sp.getTime(),sound,press));
     }
-    public Boolean save(Context context,String filename){
+
+    //保存乐谱(要带后缀名)
+    @Override
+    public Boolean save(Context context, String filename){
         String buf="";
         buf+=mInstrument+"\n";
         buf+=mScale+"\n";
@@ -78,7 +85,10 @@ public class MusicScore {
             return false;
         }
     }
-    public static MusicScore fromFile(Context context,String filename) {
+
+    //从文件中获得一个乐谱
+    //若获得失败，返回null
+    public static IMusicScore fromFile(Context context,String filename) {
         try {
             FileInputStream ifs = context.openFileInput(filename);
             byte[] buf=new byte[1024];
@@ -107,16 +117,18 @@ public class MusicScore {
         }
     }
 
+    //获得总音符数
     public int getNoteCount(){
         return note.size();
     }
 
+    //获得某个音符
     public Note getNote(int location){
         return note.get(location);
     }
 
 
-    //调试用
+    //调试用，打印某个乐谱文件
     public static void printAll(Context context,String filename){
         try {
             FileInputStream ifs = context.openFileInput(filename);
@@ -136,11 +148,11 @@ public class MusicScore {
             e.printStackTrace();
         }
     }
-    public void play(final IPlayMusic pm){
-        play(pm,null);
-        }
 
 
+
+    //播放乐谱，after:播放完成后要执行的内容
+    @Override
     public void play(final IPlayMusic pm, final Runnable after){
         nowTime=0;
         nowPos=0;
@@ -175,11 +187,15 @@ public class MusicScore {
         );
     }
 
+    //停止播放乐谱
+    @Override
     public void stop(){
         if (task!=null)
             task.cancel();
     }
 
+    //判断是否已经播放完成
+    @Override
     public boolean finished(){
         if (nowPos< note.size())
             return false;
@@ -187,43 +203,19 @@ public class MusicScore {
             return true;
     }
 
+    //播放下一个音符
+    @Override
     public void playnext(final IPlayMusic pm){
         while (!finished() &&  note.get(nowPos).press==0 )
             nowPos++;
         if (finished()) return;
         pm.play(note.get(nowPos).note);
         nowPos++;
-
-/*
-        if (nowPos==0){
-            pm.load(mInstrument, mScale,new Runnable() {
-                @Override
-                public void run() {
-                    while (!finished() &&  (note.get(nowPos).press==0) ) {
-                        nowPos++;
-
-                    }
-                    if (finished()) return;
-                    pm.play(note.get(nowPos).note);
-                    nowPos++;
-                }
-            });
-        }
-        else{
-            while (!finished() &&  note.get(nowPos).press==0 )
-                nowPos++;
-            if (finished()) return;
-            pm.play(note.get(nowPos).note);
-            nowPos++;
-        }
-        */
     }
 
 
-    public void refresh(){
-        stop();
-    }
-
+    //改变音源
+    @Override
     public void changeMusic(final IPlayMusic pm, final Runnable after) {
         pm.load(mInstrument, mScale, new Runnable() {
             @Override
@@ -234,7 +226,7 @@ public class MusicScore {
 
     }
 
-
+    //获得所有乐谱文件名
     public static String[] listMsFile(File fileRoot){
 
         File[] files=fileRoot.listFiles();

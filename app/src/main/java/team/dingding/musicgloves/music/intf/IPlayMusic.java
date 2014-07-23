@@ -9,8 +9,7 @@ public interface IPlayMusic {
     //载入音源
     public boolean load(String name,int scale);
     public boolean load(String name, int scale,final Runnable after);
-
-        //播放某个音乐
+    //播放某个音乐
     public void play(int music);
     //停止播放某个音乐
     public void stop(int music);
@@ -22,8 +21,8 @@ public interface IPlayMusic {
     public int getVolume();
     //把音乐音量调节和Seekbar联系起来
     public void volumeMatch(SeekBar seek);
-
+    //获得当前乐器
     public String getInstrument();
-
+    //获得当前调值
     public  int getScale();
 }

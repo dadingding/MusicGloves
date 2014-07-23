@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.music.impl;
+package team.dingding.musicgloves.music.imp;
 
 /**
  * Created by Elega on 2014/7/10.

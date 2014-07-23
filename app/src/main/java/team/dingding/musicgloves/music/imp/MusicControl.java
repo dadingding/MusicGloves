@@ -1,4 +1,4 @@
-package team.dingding.musicgloves.music.impl;
+package team.dingding.musicgloves.music.imp;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -15,7 +15,7 @@ import team.dingding.musicgloves.music.intf.IPlayMusic;
  */
 
 
-public class MusicControl implements IPlayMusic {
+public class MusicControl implements IPlayMusic{
     SoundPool soundPool;
     SoundPool soundPool2;
     int loadcount=0;
@@ -39,6 +39,7 @@ public class MusicControl implements IPlayMusic {
     }
 
 
+    @Override
     public boolean load(String name, int scale){
         load(name,scale,null);
         return true;
@@ -47,7 +48,8 @@ public class MusicControl implements IPlayMusic {
 
 
 
-    public boolean load(String name, int scale,final Runnable after){
+    @Override
+    public boolean load(String name, int scale, final Runnable after){
         loadsign=false;
         loadcount=0;
         currInstrument=name;
@@ -193,6 +195,7 @@ public class MusicControl implements IPlayMusic {
 
 
 
+    @Override
     public void play(int music){
         if(currInstrument.equals("Guitar"))
             stopAll();
@@ -212,6 +215,7 @@ public class MusicControl implements IPlayMusic {
         }
     }
     //停止播放某个音乐
+    @Override
     public void stop(int music){
         if(currInstrument.equals("Piano")){
             if(music<=5)
@@ -227,32 +231,38 @@ public class MusicControl implements IPlayMusic {
         }
     }
     //停止播放所有音乐
+    @Override
     public void stopAll(){
     //本来打算清理掉所有声音资源，但是考虑到声音并不多，直接一个一个关闭就行了
         for(int i=1;i<=10;i++)
             stop(i);
     }
     //设置音量
+    @Override
     public void setVolume(int value){
         am.setStreamVolume(AudioManager.STREAM_MUSIC, value, 0);
     }
 
     //获得当前音量值
+    @Override
     public int getVolume(){
         int current =am.getStreamVolume( AudioManager.STREAM_MUSIC);
         return current;
     }
 
     //把音乐音量调节和Seekbar联系起来
+    @Override
     public void volumeMatch(SeekBar seek){
         int mVolume = getVolume(); //获取当前音乐音量
         seek.setMax(am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)); //SEEKBAR设置为音量的最大阶数
         seek.setProgress(mVolume); //设置seekbar为当前音量进度
 
     }
+    @Override
     public String getInstrument(){
         return currInstrument;
     }
+     @Override
      public int getScale(){
          return currscale;
      }

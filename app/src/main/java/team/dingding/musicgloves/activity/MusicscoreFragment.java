@@ -17,12 +17,15 @@ import android.widget.Toast;
 import java.io.File;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicScore;
+import team.dingding.musicgloves.music.imp.MusicScore;
+import team.dingding.musicgloves.music.intf.IMusicScore;
 import team.dingding.musicgloves.music.intf.IPlayMusic;
 
 /**
  * Created by Elega on 2014/7/8.
  */
+
+//[乐谱]页面中的内容
 public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     private EditText et=null;
@@ -33,6 +36,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     private ImageView ivMsPlay;
     private ImageView ivMsChoose;
+    private ImageView ivMsMake;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,20 +57,23 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
 
         ivMsChoose=((ImageView)rootView.findViewById(R.id.ivMsChoose));
-
         ivMsChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivMsChooseOnClick(v);
             }
         });
+
         ((ImageView)rootView.findViewById(R.id.ivMsRemove)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivMsRemoveOnClick(v);
             }
         });
-        ((ImageView)rootView.findViewById(R.id.ivMsMake)).setOnClickListener(new View.OnClickListener() {
+
+
+        ivMsMake=(ImageView)rootView.findViewById(R.id.ivMsMake);
+        ivMsMake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivMsMakeOnClick(v);
@@ -86,6 +93,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         return fragment;
     }
 
+    //播放乐谱
     private void ivMsPlayOnClick(View v) {
         if (tvPlayMusic.getText().equals("播放乐谱")) {
             if (getMainActivity().msState == MainActivity.MusicScoreState.Support) {
@@ -109,11 +117,14 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
 
-                                    playMusicScore(filesname[which]);
-                                    Toast.makeText(context, "开始播放", Toast.LENGTH_SHORT).show();
-                                    tvPlayMusic.setText("停止播放");
-                                    ivMsPlay.setImageDrawable(getResources().getDrawable(R.drawable.pic_stopms));
-
+                                    if (playMusicScore(filesname[which])) {
+                                        Toast.makeText(context, "开始播放", Toast.LENGTH_SHORT).show();
+                                        tvPlayMusic.setText("停止播放");
+                                        ivMsPlay.setImageDrawable(getResources().getDrawable(R.drawable.pic_stopms));
+                                    }
+                                    else{
+                                        Toast.makeText(getMainActivity(), "乐谱文件为空或文件不能识别", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                     )
@@ -125,6 +136,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         }
     }
 
+    //选择乐谱进入辅助模式
     private void ivMsChooseOnClick(View v){
 
 
@@ -149,11 +161,14 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    loadMusicScore(filesname[which]);
-                                    Toast.makeText(context, "选择成功", Toast.LENGTH_SHORT).show();
-                                    tvSupportMode.setText("停止辅助模式");
-                                    ivMsChoose.setImageDrawable(getResources().getDrawable(R.drawable.pic_stopms));
-
+                                    if (loadMusicScore(filesname[which])) {
+                                        Toast.makeText(context, "选择成功", Toast.LENGTH_SHORT).show();
+                                        tvSupportMode.setText("停止辅助模式");
+                                        ivMsChoose.setImageDrawable(getResources().getDrawable(R.drawable.pic_stopms));
+                                    }
+                                    else{
+                                        Toast.makeText(getMainActivity(), "乐谱文件为空或文件不能识别", Toast.LENGTH_SHORT).show();
+                                    }
 
                                 }
                             }
@@ -173,6 +188,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     }
 
+    //删除乐谱
     private void ivMsRemoveOnClick(View v){
         final Context context=v.getContext();
         final String rootname=v.getContext().getFilesDir().getAbsolutePath()+"/";
@@ -195,6 +211,7 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
     }
 
+    //制作乐谱
     private void ivMsMakeOnClick(View v) {
 
         if (tv.getText().toString().equals("制作乐谱")) {
@@ -210,8 +227,10 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
             getMainActivity().setMusicScore(new MusicScore(pm.getInstrument(),pm.getScale()));
             getMainActivity().msState= MainActivity.MusicScoreState.Make;
             tv.setText("保存乐谱");
+            ivMsMake.setImageDrawable(getResources().getDrawable(R.drawable.pic_savems) );
+
         } else {
-            final MusicScore ms=getMainActivity().getMusicScore();
+            final IMusicScore ms=getMainActivity().getMusicScore();
             et = new EditText(v.getContext());
             et.setSingleLine();
             new AlertDialog.Builder(v.getContext())
@@ -225,15 +244,19 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                                 if (ms.save(et.getContext(), et.getText().toString() + ".msc") == false) {
                                     Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(et.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
-
+                                    if (et.getText().toString().equals("")) {
+                                        Toast.makeText(et.getContext(), "保存失败，文件名不能为空", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(et.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             } else {
                                 Toast.makeText(et.getContext(), "保存失败", Toast.LENGTH_SHORT).show();
                             }
                             tv.setText("制作乐谱");
+                            ivMsMake.setImageDrawable(getResources().getDrawable(R.drawable.pic_makems));
                             getMainActivity().setMusicScore(null);
-                            getMainActivity().msState= MainActivity.MusicScoreState.Idle;
+                            getMainActivity().msState = MainActivity.MusicScoreState.Idle;
                         }
                     })
                     .setNegativeButton("取消", null)
@@ -241,11 +264,15 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         }
     }
 
-    private void playMusicScore(String fileName){
+    //调用某乐谱执行播放
+    private boolean playMusicScore(String fileName){
+        IMusicScore ms=MusicScore.fromFile(getActivity().getBaseContext(), fileName);
+        if (ms==null){
+            return false;
+        }
         final ProgressDialog prompt = ProgressDialog.show(getMainActivity(),
                 "正在载入音源", "请稍后...", true);
         prompt.show();
-        MusicScore ms=MusicScore.fromFile(getActivity().getBaseContext(), fileName);
         IPlayMusic mc=getMainActivity().getMusicControl();
         getMainActivity().setMusicScore(ms);
         ms.changeMusic(mc,new Runnable() {
@@ -264,13 +291,18 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
 
             }
         });
+        return true;
     }
 
-    private void loadMusicScore(String fileName){
+    //加载某乐谱
+    private boolean loadMusicScore(String fileName){
+        IMusicScore ms=MusicScore.fromFile(getActivity().getBaseContext(), fileName);
+        if (ms==null){
+            return false;
+        }
         final ProgressDialog prompt = ProgressDialog.show(getMainActivity(),
                 "正在载入音源", "请稍后...", true);
         prompt.show();
-        MusicScore ms=MusicScore.fromFile(getActivity().getBaseContext(), fileName);
         IPlayMusic mc=getMainActivity().getMusicControl();
         getMainActivity().setMusicScore(ms);
         ms.changeMusic(mc,new Runnable() {
@@ -280,9 +312,11 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
                 getMainActivity().msState= MainActivity.MusicScoreState.Support;
             }
         });
+        return true;
     }
 
 
+    //停止播放
     private void stopPlayMusicScore(){
         handler.post(new Runnable() {
             @Override
@@ -303,9 +337,12 @@ public class MusicscoreFragment extends MainActivity.PlaceholderFragment {
         tvSupportMode.setText("选择辅助模式乐谱");
         ivMsPlay.setImageDrawable(getResources().getDrawable(R.drawable.pic_playms));
         ivMsChoose.setImageDrawable(getResources().getDrawable(R.drawable.pic_chosems));
+        ivMsMake.setImageDrawable(getResources().getDrawable(R.drawable.pic_makems) );
+
         switch (getMainActivity().msState){
             case Make:
                 tv.setText("保存乐谱");
+                ivMsMake.setImageDrawable(getResources().getDrawable(R.drawable.pic_savems) );
                 break;
             case Play:
                 tvPlayMusic.setText("停止演奏");

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicControl;
+import team.dingding.musicgloves.music.intf.IPlayMusic;
 
 
 /**
@@ -22,8 +22,10 @@ import team.dingding.musicgloves.music.impl.MusicControl;
 public class SettingFragment extends MainActivity.PlaceholderFragment {
 
     SeekBar seekBar;
-    MusicControl sound;
+    IPlayMusic sound;
     ImageView ivSettingSetAboutus;
+    ImageView ivSettingSetInstrument;
+
     TextView textSettingSetVolume;
     TextView textSettingSetScale;
     TextView textSettingSetInstrument;
@@ -35,7 +37,8 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
         loadSpinner(rootView);
-        ((ImageView)rootView.findViewById(R.id.ivSettingSetInstrument)).setOnClickListener(new View.OnClickListener() {
+        ivSettingSetInstrument=(ImageView)rootView.findViewById(R.id.ivSettingSetInstrument);
+        ivSettingSetInstrument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivSettingSetInstrumentOnClick(view);
@@ -73,6 +76,7 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
         return fragment;
     }
 
+    //加载一些控件
     private void loadSpinner(View v){
         sound = getMainActivity().getMusicControl();
         seekBar=(SeekBar)v.findViewById(R.id.seekbarSettingVolume);
@@ -89,6 +93,8 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
+
+    //设置乐器
     private void ivSettingSetInstrumentOnClick(final View v) {
         final String[] instruments=getResources().getStringArray(R.array.instruments);
         final String[] instrumentsName={"Magic","Piano","Drum","Guitar"};
@@ -122,6 +128,7 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
         ).setNegativeButton("取消", null).show();
     }
 
+    //设置调值
     private void ivSettingSetScaleOnClick(final  View v){
         final String[] scale={"0","1","2"};
         final String[] instrumentsName={"Magic","Piano","Drum","Guitar"};
@@ -158,16 +165,34 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
         ).setNegativeButton("取消", null).show();
     }
 
+    //查看[关于我们]
     private void ivSettingSetAboutusOnClick(final View v){
         ivSettingSetAboutus.setImageDrawable(getResources().getDrawable(R.drawable.pic_members));
 
     }
 
-    private void updateText(){
+
+    public void updateText(){
         final String[] instruments=getResources().getStringArray(R.array.instruments);
+
+
         textSettingSetInstrument.setText("乐器 "+instruments[getMainActivity().getSource()] );
         textSettingSetScale.setText("音调 "+getMainActivity().getScale() );
         textSettingSetVolume.setText("音量 " + seekBar.getProgress());
+        switch (getMainActivity().getSource()){
+            case 0:
+                ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_magic));
+                break;
+            case 1:
+                ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_piano));
+                break;
+            case 2:
+                ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_drum));
+                break;
+            case 3:
+                ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_guitar));
+                break;
+        }
 
     }
 }

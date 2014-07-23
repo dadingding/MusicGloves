@@ -14,26 +14,19 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 
-import com.baidu.oauth.BaiduOAuth;
-import com.baidu.oauth.BaiduOAuth.BaiduOAuthResponse;
 import com.baidu.pcs.BaiduPCSClient;
-import com.baidu.pcs.BaiduPCSErrorCode;
-import com.baidu.pcs.BaiduPCSStatusListener;
 import com.baidu.pcs.BaiduPCSActionInfo;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicScore;
+import team.dingding.musicgloves.music.imp.MusicScore;
 
 public class BaiduCloudActivity extends Activity {
     /** Called when the activity is first created. */
@@ -77,6 +70,7 @@ public class BaiduCloudActivity extends Activity {
     }
 
 
+    //下载事件
     private void btnDownloadOnClick() {
         final Context context = this;
         final ProgressDialog dialog = ProgressDialog.show(this,
@@ -139,7 +133,7 @@ public class BaiduCloudActivity extends Activity {
     }
 
 
-
+    //与服务器连接尝试下载
     private void tryDownload(String fileName){
 
         BaiduPCSClient api = new BaiduPCSClient();
@@ -161,7 +155,7 @@ public class BaiduCloudActivity extends Activity {
 
 
 
-
+    //上传事件
     private void btnUploadOnClick(){
         final Context context=this;
         //dialog.show();
@@ -194,7 +188,7 @@ public class BaiduCloudActivity extends Activity {
 
     }
 
-
+    //与服务器连接尝试上传
     private void tryUpload(final String filename){
         final ProgressDialog dialog = ProgressDialog.show(this,
                 "正在上传至云服务器", "请稍后...", true);
@@ -224,7 +218,7 @@ public class BaiduCloudActivity extends Activity {
         }
 
     }
-
+    //列出服务器端的所有文件
     private String[] listFile() throws NetworkErrorException{
         Vector<String> result=new Vector<String>();
         if (null != mbOauth) {
@@ -250,7 +244,7 @@ public class BaiduCloudActivity extends Activity {
 
     }
 
-
+    //删除云端文件
     private boolean deleteCloudFile(final String fileName) {
         if (null != mbOauth) {
             BaiduPCSClient api = new BaiduPCSClient();
@@ -263,7 +257,7 @@ public class BaiduCloudActivity extends Activity {
     }
 
 
-
+    //判断文件是否存在
     private boolean existFile(final String fileName) {
         if (null != mbOauth) {
             BaiduPCSClient api = new BaiduPCSClient();
@@ -280,9 +274,7 @@ public class BaiduCloudActivity extends Activity {
 
 
 
-    //
-    // test delete
-    //
+    //删除事件
     private void btnDeleteOnClick(){
         final Context context = this;
         final ProgressDialog dialog = ProgressDialog.show(this,
@@ -344,6 +336,7 @@ public class BaiduCloudActivity extends Activity {
 
     }
 
+    //尝试从云端删除
     private void tryDelete(String fileName){
         BaiduPCSClient api = new BaiduPCSClient();
         api.setAccessToken(mbOauth);
@@ -361,6 +354,7 @@ public class BaiduCloudActivity extends Activity {
     }
 
 
+    //退出事件
     private void btnQuitOnClick(){
         this.finish();
     }

@@ -18,8 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicControl;
-import team.dingding.musicgloves.music.impl.MusicScore;
+import team.dingding.musicgloves.music.imp.MusicControl;
+import team.dingding.musicgloves.music.imp.MusicScore;
+import team.dingding.musicgloves.music.intf.IMusicScore;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
 import team.dingding.musicgloves.protocol.imp.WifiProtocolController;
@@ -37,7 +38,7 @@ public class MainActivity extends Activity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private MusicControl sound;
-    private MusicScore mMS;
+    private IMusicScore mMS;
     public MusicScoreState msState=MusicScoreState.Idle;
 
 
@@ -71,9 +72,9 @@ public class MainActivity extends Activity
         this.scale = scale;
     }
 
-    public MusicScore getMusicScore(){return mMS;}
+    public IMusicScore getMusicScore(){return mMS;}
 
-    public void setMusicScore(MusicScore value){mMS=value;}
+    public void setMusicScore(IMusicScore value){mMS=value;}
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -83,6 +84,7 @@ public class MainActivity extends Activity
     private ClientManager mCM;
     private FuncFragment mFF;
     private MusicscoreFragment mMF;
+    private SettingFragment mSF;
 
     public boolean supportMode=false;
 
@@ -98,6 +100,9 @@ public class MainActivity extends Activity
                 mFF.updateText();
             if (mMF!=null && nowfragment==2)
                 mMF.updateText();
+            if (mSF!=null && nowfragment==3)
+                mSF.updateText();
+
         }
     };
 
@@ -115,7 +120,6 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -186,42 +190,59 @@ public class MainActivity extends Activity
                         setSource(0);
                         setScale(0);
                         sound.load("Magic",0);
-                        Log.v("233","2333");
+                        childProcessToast("弹奏乐器切换至哲学魔幻电子音");
+                        updateHandler.sendMessage(new Message());
                         break;
                     case 2:
                         setSource(1);
                         setScale(0);
-                        sound.load("Piano",0);
+                        sound.load("Piano", 0);
+                        childProcessToast("弹奏乐器切换至钢琴");
+                        updateHandler.sendMessage(new Message());
+
                         break;
                     case 3:
                         setSource(1);
                         setScale(1);
-                        sound.load("Piano",1);
+                        sound.load("Piano", 1);
+                        childProcessToast("弹奏乐器切换至钢琴");
+                        updateHandler.sendMessage(new Message());
                         break;
                     case 4:
                         setSource(1);
                         setScale(2);
                         sound.load("Piano",2);
+                        childProcessToast("弹奏乐器切换至钢琴");
+                        updateHandler.sendMessage(new Message());
                         break;
                     case 5:
                         setSource(2);
                         setScale(0);
                         sound.load("Drum",0);
+                        childProcessToast("弹奏乐器切换至架子鼓");
+                        updateHandler.sendMessage(new Message());
                         break;
                     case 6:
                         setSource(3);
                         setScale(0);
                         sound.load("Guitar",0);
+                        childProcessToast("弹奏乐器切换至吉他");
+                        updateHandler.sendMessage(new Message());
+
                         break;
                     case 7:
                         setSource(3);
                         setScale(1);
-                        sound.load("Guitar",1);
+                        sound.load("Guitar", 1);
+                        childProcessToast("弹奏乐器切换至吉他");
+                        updateHandler.sendMessage(new Message());
                         break;
                     case 8:
                         setSource(3);
                         setScale(2);
-                        sound.load("Guitar",2);
+                        sound.load("Guitar", 2);
+                        childProcessToast("弹奏乐器切换至吉他");
+                        updateHandler.sendMessage(new Message());
                         break;
 
                 }
@@ -260,6 +281,8 @@ public class MainActivity extends Activity
             }
             sound.load(name,getScale());
 
+
+        MusicScore.printAll(this,"q.msc");
 
     }
     @Override
@@ -308,8 +331,9 @@ public class MainActivity extends Activity
                         .commit();
                 break;
             case 3:
+                mSF=(SettingFragment)SettingFragment.newInstance(position + 1);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SettingFragment.newInstance(position + 1))
+                        .replace(R.id.container, mSF)
                         .commit();
                 break;
         }
