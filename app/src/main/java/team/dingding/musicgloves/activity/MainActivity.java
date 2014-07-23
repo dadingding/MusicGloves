@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicControlImpl;
+import team.dingding.musicgloves.music.impl.MusicControl;
 import team.dingding.musicgloves.music.impl.MusicScore;
 import team.dingding.musicgloves.network.imp.ClientManager;
 import team.dingding.musicgloves.network.intf.IServerCallBack;
@@ -36,7 +36,7 @@ public class MainActivity extends Activity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private MusicControlImpl sound;
+    private MusicControl sound;
     private MusicScore mMS;
     public MusicScoreState msState=MusicScoreState.Idle;
 
@@ -176,7 +176,7 @@ public class MainActivity extends Activity
 
             }
         });
-        sound=new MusicControlImpl(this);
+        sound=new MusicControl(this);
         mPC.registerMusicEvent("switchInstrument",new IProtocolCallBack() {
             @Override
             public void execute(Long cid, String argument) {
@@ -369,7 +369,7 @@ public class MainActivity extends Activity
         return mPC;
     }
 
-    public MusicControlImpl getMusicControl(){
+    public MusicControl getMusicControl(){
         return sound;
     }
 

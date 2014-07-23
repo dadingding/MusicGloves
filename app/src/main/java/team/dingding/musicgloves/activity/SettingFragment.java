@@ -7,16 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import team.dingding.musicgloves.R;
-import team.dingding.musicgloves.music.impl.MusicControlImpl;
+import team.dingding.musicgloves.music.impl.MusicControl;
 
 
 /**
@@ -25,7 +22,7 @@ import team.dingding.musicgloves.music.impl.MusicControlImpl;
 public class SettingFragment extends MainActivity.PlaceholderFragment {
 
     SeekBar seekBar;
-    MusicControlImpl sound;
+    MusicControl sound;
     ImageView ivSettingSetAboutus;
     TextView textSettingSetVolume;
     TextView textSettingSetScale;

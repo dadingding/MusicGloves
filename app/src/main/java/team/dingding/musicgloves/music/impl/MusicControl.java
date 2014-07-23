@@ -15,7 +15,7 @@ import team.dingding.musicgloves.music.intf.IPlayMusic;
  */
 
 
-public class MusicControlImpl implements IPlayMusic {
+public class MusicControl implements IPlayMusic {
     SoundPool soundPool;
     SoundPool soundPool2;
     int loadcount=0;
@@ -27,7 +27,7 @@ public class MusicControlImpl implements IPlayMusic {
     Context mContext;
     HashMap<Integer, Integer> soundMap;
     //载入音源
-    public MusicControlImpl(Context context){
+    public MusicControl(Context context){
         mContext=context;
         currplay=new int[10];
         for(int i=0;i<10;i++)
