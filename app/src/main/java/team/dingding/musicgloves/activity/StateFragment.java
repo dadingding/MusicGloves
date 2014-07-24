@@ -154,6 +154,7 @@ public class StateFragment extends MainActivity.PlaceholderFragment {
                     }catch(Exception e){
                         e.printStackTrace();
                     }
+
                     Canvas canvas2 = null;
                     try{
                         onDraw2(canvas2);
