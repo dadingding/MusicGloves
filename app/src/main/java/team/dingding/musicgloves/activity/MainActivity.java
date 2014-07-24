@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -41,7 +44,7 @@ public class MainActivity extends Activity
     private IMusicScore mMS;
     public MusicScoreState msState=MusicScoreState.Idle;
 
-
+    boolean[] isMove=new boolean[10];//记录小球的运动状态
 
 
     public SharedPreferences getSp() {
@@ -85,6 +88,7 @@ public class MainActivity extends Activity
     private FuncFragment mFF;
     private MusicscoreFragment mMF;
     private SettingFragment mSF;
+    private StateFragment mStF;
 
     public boolean supportMode=false;
 
@@ -98,6 +102,8 @@ public class MainActivity extends Activity
         public void handleMessage(Message msg) {
             if (mFF!=null && nowfragment==0)
                 mFF.updateText();
+            if (mStF!=null && nowfragment==1)
+                mStF.updateText();
             if (mMF!=null && nowfragment==2)
                 mMF.updateText();
             if (mSF!=null && nowfragment==3)
@@ -126,6 +132,11 @@ public class MainActivity extends Activity
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
+        for(int i=0;i<10;i++){
+            //初始小球的运动状态
+            isMove[i]=false;
+        }
+
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -149,7 +160,11 @@ public class MainActivity extends Activity
             public void execute(Long cid, String argument) {
                 if (msState!=MusicScoreState.Support) {
                     int res = Integer.valueOf(argument);
+                    for(int i=0;i<10;i++)
+                        isMove[i]=false;
+                    isMove[res-1]=true;
                     sound.play(res);
+
                     if (mMS != null) {
                         mMS.append(res, 1);
                     }
@@ -320,8 +335,9 @@ public class MainActivity extends Activity
                         .commit();
                 break;
             case 1:
+                mStF=(StateFragment)StateFragment.newInstance(position+1);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, StateFragment.newInstance(position + 1))
+                        .replace(R.id.container, mStF)
                         .commit();
                 break;
             case 2:
@@ -401,6 +417,9 @@ public class MainActivity extends Activity
         return mCM;
     }
 
+    public boolean isMoveOfWhich(int index){return isMove[index];}
+    public void setMoveOfWhich(int index){isMove[index]=false;}
+
     private void connectSucceed(long cid){
         mCM.addClient(cid);
         this.childProcessToast(cid + "连接成功");
@@ -468,27 +487,6 @@ public class MainActivity extends Activity
         public MainActivity getMainActivity(){
             return (MainActivity) getActivity();
         }
-    }
-        public void play(View v){
-          sound.play(1);
-            sleep(3000);
-            sound.play(2);
-            sleep(3000);
-            sound.play(3);
-            sleep(3000);
-            sound.play(4);
-            sleep(3000);
-            sound.play(5);
-            sleep(3000);
-            sound.play(6);
-            sleep(3000);
-            sound.play(7);
-            sleep(3000);
-            sound.play(8);
-            sleep(3000);
-            sound.play(9);
-            sleep(3000);
-            sound.play(10);
     }
 
     public enum MusicScoreState{

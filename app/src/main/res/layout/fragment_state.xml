@@ -27,6 +27,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             >
+
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -34,57 +35,14 @@
                 android:src="@drawable/playleft"
                 android:id="@+id/ivStateDevice0"
                 />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="未连接"
-                android:textColor="#000000"
-                android:textSize="18dip"
-                android:id="@+id/textStateCntState0"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:text="设备一"
-                android:textColor="#000000"
-                android:textSize="18dip"
-                />
+
+
+
+            <SurfaceView android:id="@+id/SurfaceView01"
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                ></SurfaceView>
         </FrameLayout>
 
-    <LinearLayout
-        android:layout_weight="1.5"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-
-
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="CID：无"
-            android:layout_row="3"
-            android:layout_column="1"
-            android:id="@+id/textStateID0"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="触击：0"
-            android:layout_row="3"
-            android:layout_column="1"
-            android:id="@+id/textHitID0"
-            />
-
-
-    </LinearLayout>
 
     </LinearLayout>
 
@@ -97,16 +55,14 @@
 
         >
 
-
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:paddingTop="0dp"
             android:layout_marginTop="0dp"
-
-
             >
+
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -115,57 +71,11 @@
                 android:id="@+id/ivStateDevice1"
 
                 />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="未连接"
-                android:textColor="#000000"
-                android:textSize="18dip"
-                android:id="@+id/textStateCntState1"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:text="设备二"
-                android:textColor="#000000"
-                android:textSize="18dip"
-                />
+
+            <SurfaceView android:id="@+id/SurfaceView02"
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                ></SurfaceView>
         </FrameLayout>
-
-        <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1.5"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="CID：无"
-                android:layout_row="3"
-                android:layout_column="1"
-                android:id="@+id/textStateID1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="触击：0"
-                android:layout_row="3"
-                android:layout_column="1"
-                android:id="@+id/textHitID1"
-                />
-
-
-
-        </LinearLayout>
 
     </LinearLayout>
 
