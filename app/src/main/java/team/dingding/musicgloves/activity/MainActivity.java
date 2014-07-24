@@ -318,8 +318,8 @@ public class MainActivity extends Activity
         editor.putInt(SourceKey, source);
         editor.putInt(ScaleKey, scale);
         editor.commit();
-        mPC.stopServer();
-        mPC.stopWifi();
+//        mPC.stopServer();
+//        mPC.stopWifi();
         super.onStop();
     }
     @Override
