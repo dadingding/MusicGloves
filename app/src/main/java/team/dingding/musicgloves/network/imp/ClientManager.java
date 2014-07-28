@@ -18,6 +18,7 @@ public class ClientManager {
         return false;
     }
     public boolean removeClient(long cid){
+        if (client[0]==null) return false;
         if (client[0]==cid){
             client[0]=null;
             return true;
@@ -42,5 +43,10 @@ public class ClientManager {
         if (client[0] == cid) return 0;
         if (client[1] == cid) return 1;
         else return null;
+    }
+
+    public void clear(){
+        client[0]=null;
+        client[1]=null;
     }
 }

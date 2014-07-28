@@ -128,10 +128,13 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
 
     //建立wifi热点
     public void btnFuncSetWifiOnClick(View v){
+
+        getMainActivity().getClientManager().clear();
         final ProgressDialog dialog=ProgressDialog.show(v.getContext(),
                 "正在开启Wifi热点并架设服务器","请稍后...",true);
         dialog.show();
         mPC=((MainActivity)this.getActivity()).getProtocolController();
+        mPC.stopServer();
         mPC.startApaAndServer("MusicGloves","12345678",5000,8081,new IStartWifiCallBack() {
             @Override
             public void execute() {
@@ -143,6 +146,7 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
                 dialog.dismiss();
             }
         });
+        updateText();
     }
 
 
