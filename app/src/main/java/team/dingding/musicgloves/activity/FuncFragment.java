@@ -149,7 +149,6 @@ public class FuncFragment extends MainActivity.PlaceholderFragment {
         updateText();
     }
 
-
     //退出程序
     public void btnFuncQuitOnClick(View v){
 
