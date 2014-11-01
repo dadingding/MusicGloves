@@ -23,10 +23,15 @@ public interface IMusicScore {
     //播放乐谱，after:播放完成后要执行的内容
     void play(IPlayMusic pm, Runnable after);
 
-    //播放下一个音符
+
+
+
+        //播放下一个音符
     void playnext(IPlayMusic pm);
 
-    //停止播放乐谱
+
+
+        //停止播放乐谱
     void stop();
 
     //判断是否已经播放完成

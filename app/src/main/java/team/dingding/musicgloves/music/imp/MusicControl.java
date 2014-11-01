@@ -18,6 +18,9 @@ import team.dingding.musicgloves.music.intf.IPlayMusic;
 public class MusicControl implements IPlayMusic{
     SoundPool soundPool;
     SoundPool soundPool2;
+    SoundPool soundPool3;
+    SoundPool soundPool4;
+
     int loadcount=0;
     int currplay[];
     String currInstrument=null;
@@ -29,11 +32,16 @@ public class MusicControl implements IPlayMusic{
     //载入音源
     public MusicControl(Context context){
         mContext=context;
-        currplay=new int[10];
+        currplay=new int[21];
         for(int i=0;i<10;i++)
             currplay[i]=0;
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
         soundPool2 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
+
+        soundPool3 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
+        soundPool4 = new SoundPool(10, AudioManager.STREAM_MUSIC,10);
+
+
         soundMap = new HashMap<Integer, Integer>();
         am=(AudioManager) context.getSystemService(context.AUDIO_SERVICE);
     }
@@ -41,12 +49,89 @@ public class MusicControl implements IPlayMusic{
 
     @Override
     public boolean load(String name, int scale){
-        load(name,scale,null);
+            load(name,scale,null);
         return true;
     }
+
+
     //播放某个音乐
 
+    public boolean loadall_piano(final Runnable after)
+    {
+        loadsign=false;
+        loadcount=0;
+        currInstrument="Piano2";
+        currscale=1;
+        soundMap.put(1, soundPool.load(mContext, R.raw.sound_piano_01, 1));
+        soundMap.put(2, soundPool.load(mContext, R.raw.sound_piano_02, 1));
+        soundMap.put(3, soundPool.load(mContext, R.raw.sound_piano_03, 1));
+        soundMap.put(4, soundPool.load(mContext, R.raw.sound_piano_04, 1));
+        soundMap.put(5, soundPool.load(mContext, R.raw.sound_piano_05, 1));
+        soundMap.put(6, soundPool2.load(mContext, R.raw.sound_piano_06, 1));
+        soundMap.put(7, soundPool2.load(mContext, R.raw.sound_piano_07, 1));
 
+        soundMap.put(8, soundPool2.load(mContext, R.raw.sound_piano_11, 1));
+        soundMap.put(9, soundPool2.load(mContext, R.raw.sound_piano_12, 1));
+        soundMap.put(10, soundPool2.load(mContext, R.raw.sound_piano_13, 1));
+        soundMap.put(11, soundPool3.load(mContext, R.raw.sound_piano_14, 1));
+        soundMap.put(12, soundPool3.load(mContext, R.raw.sound_piano_15, 1));
+        soundMap.put(13, soundPool3.load(mContext, R.raw.sound_piano_16, 1));
+        soundMap.put(14, soundPool3.load(mContext, R.raw.sound_piano_17, 1));
+
+        soundMap.put(15, soundPool3.load(mContext, R.raw.sound_piano_21, 1));
+        soundMap.put(16, soundPool4.load(mContext, R.raw.sound_piano_22, 1));
+        soundMap.put(17, soundPool4.load(mContext, R.raw.sound_piano_23, 1));
+        soundMap.put(18, soundPool4.load(mContext, R.raw.sound_piano_24, 1));
+        soundMap.put(19, soundPool4.load(mContext, R.raw.sound_piano_25, 1));
+        soundMap.put(20, soundPool4.load(mContext, R.raw.sound_piano_26, 1));
+        soundMap.put(21, soundPool4.load(mContext, R.raw.sound_piano_27, 1));
+
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount==21)
+                    if (after!=null) after.run();
+                    loadsign=true;
+            }
+        });
+
+        soundPool2.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount==21)
+                    if (after!=null) after.run();
+                loadsign=true;
+            }
+        });
+
+
+        soundPool3.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount==21)
+                    if (after!=null) after.run();
+                loadsign=true;
+            }
+        });
+
+
+        soundPool4.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
+            @Override
+            public void onLoadComplete(SoundPool arg0, int arg1, int arg2) {
+                loadcount = loadcount + 1;
+                if (loadcount==21)
+                    if (after!=null) after.run();
+                loadsign=true;
+            }
+        });
+
+
+        return true;
+    }
 
     @Override
     public boolean load(String name, int scale, final Runnable after){
@@ -146,7 +231,11 @@ public class MusicControl implements IPlayMusic{
                 soundMap.put(8, soundPool2.load(mContext, R.raw.guitar2_8, 1));
             }
         }
-
+        else if(name.equals("Piano2"))
+        {
+            loadall_piano(after);
+            return true;
+        }
 
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener(){
             @Override
@@ -192,6 +281,23 @@ public class MusicControl implements IPlayMusic{
 
 
 
+
+    @Override
+    public void play(int music,int scale){
+        if(currInstrument.equals("Piano2"))
+        {
+            int now=music+scale*7;
+            if (now <= 5)
+                currplay[now - 1] = soundPool.play(soundMap.get(now), 1, 1, 0, 0, 1);
+            else if(now<=10)
+                currplay[now - 1] = soundPool2.play(soundMap.get(now), 1, 1, 0, 0, 1);
+            else if(now<=15)
+                currplay[now - 1] = soundPool3.play(soundMap.get(now), 1, 1, 0, 0, 1);
+            else if(now<=21)
+                currplay[now - 1] = soundPool4.play(soundMap.get(now), 1, 1, 0, 0, 1);
+
+        }
+    }
 
 
 
@@ -266,6 +372,15 @@ public class MusicControl implements IPlayMusic{
      public int getScale(){
          return currscale;
      }
+
+    @Override
+    public void setScale(int scale)
+    {
+        currscale=scale;
+    }
+
+
+
 
 
 }

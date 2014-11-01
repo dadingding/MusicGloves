@@ -163,8 +163,20 @@ public class MainActivity extends Activity
                     for(int i=0;i<10;i++)
                         isMove[i]=false;
                     isMove[res-1]=true;
-                    sound.play(res);
-
+                    if (sound.getInstrument().equals("Piano2"))
+                    {
+                        if (res==10)
+                            sound.setScale(0);
+                        else if (res==9)
+                            sound.setScale(1);
+                        else if (res==8)
+                            sound.setScale(2);
+                        else
+                            sound.play(res,sound.getScale());
+                    }
+                    else {
+                        sound.play(res);
+                    }
                     if (mMS != null) {
                         mMS.append(res, 1);
                     }
@@ -288,16 +300,19 @@ public class MainActivity extends Activity
                     name="Piano";
                     break;
                 case 2:
-                    name="Drum";
+                    name="Piano2";
                     break;
                 case 3:
+                    name="Drum";
+                    break;
+                case 4:
                     name="Guitar";
                     break;
             }
             sound.load(name,getScale());
 
 
-        MusicScore.printAll(this,"q.msc");
+//        MusicScore.printAll(this,"q.msc");
 
     }
     @Override
@@ -421,6 +436,7 @@ public class MainActivity extends Activity
     public void setMoveOfWhich(int index){isMove[index]=false;}
 
     private void connectSucceed(long cid){
+
         mCM.addClient(cid);
         this.childProcessToast(cid + "连接成功");
         Log.v("233", cid + "连接成功");

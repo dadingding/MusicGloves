@@ -97,7 +97,7 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
     //设置乐器
     private void ivSettingSetInstrumentOnClick(final View v) {
         final String[] instruments=getResources().getStringArray(R.array.instruments);
-        final String[] instrumentsName={"Magic","Piano","Drum","Guitar"};
+        final String[] instrumentsName={"Magic","Piano","Piano2","Drum","Guitar"};
 
         final int source=getMainActivity().getSource();
 
@@ -131,11 +131,12 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
     //设置调值
     private void ivSettingSetScaleOnClick(final  View v){
         final String[] scale={"0","1","2"};
-        final String[] instrumentsName={"Magic","Piano","Drum","Guitar"};
+        final String[] instrumentsName={"Magic","Piano","Piano2","Drum","Guitar"};
 
         final int nowsource=getMainActivity().getSource();
         final int nowscale=getMainActivity().getScale();
-        if (instrumentsName[nowsource].equals("Magic") || instrumentsName[nowsource].equals("Drum")){
+        if (instrumentsName[nowsource].equals("Magic") || instrumentsName[nowsource].equals("Drum") ||
+        instrumentsName[nowsource].equals("Piano2")){
             Toast.makeText(v.getContext(),"当前模式下的乐器不支持调整音调", Toast.LENGTH_LONG).show();
             return;
         }
@@ -183,13 +184,13 @@ public class SettingFragment extends MainActivity.PlaceholderFragment {
             case 0:
                 ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_magic));
                 break;
-            case 1:
+            case 1:case 2:
                 ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_piano));
                 break;
-            case 2:
+            case 3:
                 ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_drum));
                 break;
-            case 3:
+            case 4:
                 ivSettingSetInstrument.setImageDrawable(getResources().getDrawable(R.drawable.pic_guitar));
                 break;
         }

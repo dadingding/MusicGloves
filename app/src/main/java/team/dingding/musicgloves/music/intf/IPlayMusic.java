@@ -8,8 +8,9 @@ import android.widget.SeekBar;
 public interface IPlayMusic {
     //载入音源
     public boolean load(String name,int scale);
-    public boolean load(String name, int scale,final Runnable after);
+    public boolean load(String name,int scale,final Runnable after);
     //播放某个音乐
+    public void play(int music,int scale);
     public void play(int music);
     //停止播放某个音乐
     public void stop(int music);
@@ -25,4 +26,8 @@ public interface IPlayMusic {
     public String getInstrument();
     //获得当前调值
     public  int getScale();
+    //设置当前调值
+    public void setScale(int scale);
+
+
 }
